@@ -76,9 +76,9 @@ export function AppTeamSwitcher({ user, teams }: { user: User; teams: Team[] }) 
                             <DropdownMenuItem key={team.id} onClick={() => switchToTeam(team)} className="gap-2 p-2">
                                 <div className="flex size-6 items-center justify-center rounded-md border">
                                     {team.id === user.current_team_id ? (
-                                        <Circle className="size-4" />
-                                    ) : (
                                         <CircleCheck className="size-4 text-green-500"></CircleCheck>
+                                    ) : (
+                                        <Circle className="size-4" />
                                     )}
                                 </div>
                                 {team.name}
