@@ -10,7 +10,7 @@ import { Button } from '@/Components/ui/button';
 import { Input } from '@/Components/ui/input';
 import { Label } from '@/Components/ui/label';
 import AppLayout from '@/Layouts/AppLayout';
-import SettingsLayout from '@/Layouts/Settings/layout';
+import SettingsLayout from '@/Layouts/Settings/Layout';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
