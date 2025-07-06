@@ -3,7 +3,6 @@ import classNames from 'classnames';
 import React, { useState } from 'react';
 import useRoute from '@/Hooks/useRoute';
 import ActionMessage from '@/Components/ActionMessage';
-import ActionSection from '@/Components/ActionSection';
 import { Checkbox } from '@/Components/ui/checkbox';
 import {
     Dialog,
@@ -14,11 +13,15 @@ import {
     DialogTitle,
 } from '@/Components/ui/dialog';
 import { Button } from '@/Components/ui/button';
-import FormSection from '@/Components/FormSection';
+import {
+    Card,
+    CardContent,
+    CardFooter,
+} from '@/Components/ui/card';
 import InputError from '@/Components/ui/InputError';
 import { Input } from '@/Components/ui/input';
 import { Label } from '@/Components/ui/label';
-import SectionBorder from '@/Components/SectionBorder';
+import { Separator } from '@/Components/ui/separator';
 import { ApiToken } from '@/types';
 import useTypedPage from '@/Hooks/useTypedPage';
 
@@ -98,141 +101,172 @@ export default function APITokenManager({
 
     return (
         <div>
-            {/* <!-- Generate API Token --> */}
-            <FormSection
-                onSubmit={createApiToken}
-                title={'Create API Token'}
-                description={
-                    'API tokens allow third-party services to authenticate with our application on your behalf.'
-                }
-                renderActions={() => (
-                    <>
-                        <ActionMessage
-                            on={createApiTokenForm.recentlySuccessful}
-                            className="mr-3"
-                        >
-                            Created.
-                        </ActionMessage>
-
-                        <Button
-                            className={classNames({
-                                'opacity-25': createApiTokenForm.processing,
-                            })}
-                            disabled={createApiTokenForm.processing}
-                        >
-                            Create
-                        </Button>
-                    </>
-                )}
-            >
-                {/* <!-- Token Name --> */}
-                <div className="col-span-6 sm:col-span-4">
-                    <Label htmlFor="name">Name</Label>
-                    <Input
-                        id="name"
-                        type="text"
-                        className="mt-1 block w-full"
-                        value={createApiTokenForm.data.name}
-                        onChange={e =>
-                            createApiTokenForm.setData('name', e.currentTarget.value)
-                        }
-                        autoFocus
-                    />
-                    <InputError
-                        message={createApiTokenForm.errors.name}
-                        className="mt-2"
-                    />
-                </div>
-
-                {/* <!-- Token Permissions --> */}
-                {availablePermissions.length > 0 && (
-                    <div className="col-span-6">
-                        <Label htmlFor="permissions">Permissions</Label>
-
-                        <div className="mt-2 grid grid-cols-1 md:grid-cols-2 gap-4">
-                            {availablePermissions.map(permission => (
-                                <div key={permission}>
-                                    <label className="flex items-center">
-                                        <Checkbox
-                                            id={permission}
-                                            checked={createApiTokenForm.data.permissions.includes(
-                                                permission,
-                                            )}
-                                            onCheckedChange={checked => {
-                                                const currentPermissions =
-                                                    createApiTokenForm.data.permissions;
-                                                const newPermissions = checked
-                                                    ? [...currentPermissions, permission]
-                                                    : currentPermissions.filter(p => p !== permission);
-                                                createApiTokenForm.setData(
-                                                    'permissions',
-                                                    newPermissions,
-                                                );
-                                            }}
-                                        />
-                                        <span className="ml-2 text-sm text-gray-600 dark:text-gray-400">
-                                            {permission}
-                                        </span>
-                                    </label>
-                                </div>
-                            ))}
-                        </div>
+            <div className="md:grid md:grid-cols-3 md:gap-6">
+                <div className="md:col-span-1">
+                    <div className="px-4 sm:px-0">
+                        <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">
+                            Create API Token
+                        </h3>
+                        <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                            API tokens allow third-party services to authenticate with our
+                            application on your behalf.
+                        </p>
                     </div>
-                )}
-            </FormSection>
+                </div>
+                <div className="mt-5 md:mt-0 md:col-span-2">
+                    <form
+                        onSubmit={e => {
+                            e.preventDefault();
+                            createApiToken();
+                        }}
+                    >
+                        <Card>
+                            <CardContent className="p-6">
+                                <div className="grid grid-cols-6 gap-6">
+                                    {/* <!-- Token Name --> */}
+                                    <div className="col-span-6 sm:col-span-4">
+                                        <Label htmlFor="name">Name</Label>
+                                        <Input
+                                            id="name"
+                                            type="text"
+                                            className="mt-1 block w-full"
+                                            value={createApiTokenForm.data.name}
+                                            onChange={e =>
+                                                createApiTokenForm.setData('name', e.currentTarget.value)
+                                            }
+                                            autoFocus
+                                        />
+                                        <InputError
+                                            message={createApiTokenForm.errors.name}
+                                            className="mt-2"
+                                        />
+                                    </div>
+
+                                    {/* <!-- Token Permissions --> */}
+                                    {availablePermissions.length > 0 && (
+                                        <div className="col-span-6">
+                                            <Label htmlFor="permissions">Permissions</Label>
+
+                                            <div className="mt-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                {availablePermissions.map(permission => (
+                                                    <div key={permission}>
+                                                        <label className="flex items-center">
+                                                            <Checkbox
+                                                                id={permission}
+                                                                checked={createApiTokenForm.data.permissions.includes(
+                                                                    permission,
+                                                                )}
+                                                                onCheckedChange={checked => {
+                                                                    const currentPermissions =
+                                                                        createApiTokenForm.data.permissions;
+                                                                    const newPermissions = checked
+                                                                        ? [...currentPermissions, permission]
+                                                                        : currentPermissions.filter(p => p !== permission);
+                                                                    createApiTokenForm.setData(
+                                                                        'permissions',
+                                                                        newPermissions,
+                                                                    );
+                                                                }}
+                                                            />
+                                                            <span className="ml-2 text-sm text-gray-600 dark:text-gray-400">
+                                                                {permission}
+                                                            </span>
+                                                        </label>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            </CardContent>
+                            <CardFooter>
+                                <div className="flex items-center justify-end text-right">
+                                    <ActionMessage
+                                        on={createApiTokenForm.recentlySuccessful}
+                                        className="mr-3"
+                                    >
+                                        Created.
+                                    </ActionMessage>
+
+                                    <Button
+                                        className={classNames({
+                                            'opacity-25': createApiTokenForm.processing,
+                                        })}
+                                        disabled={createApiTokenForm.processing}
+                                    >
+                                        Create
+                                    </Button>
+                                </div>
+                            </CardFooter>
+                        </Card>
+                    </form>
+                </div>
+            </div>
 
             {tokens.length > 0 ? (
                 <div>
-                    <SectionBorder />
+                    <div className="hidden sm:block">
+                        <div className="py-8">
+                            <Separator />
+                        </div>
+                    </div>
 
-                    {/* <!-- Manage API Tokens --> */}
-                    <div className="mt-10 sm:mt-0">
-                        <ActionSection
-                            title={'Manage API Tokens'}
-                            description={
-                                'You may delete any of your existing tokens if they are no longer needed.'
-                            }
-                        >
-                            {/* <!-- API Token List --> */}
-                            <div className="space-y-6">
-                                {tokens.map(token => (
-                                    <div
-                                        className="flex items-center justify-between"
-                                        key={token.id}
-                                    >
-                                        <div className="break-all dark:text-white">
-                                            {token.name}
-                                        </div>
-
-                                        <div className="flex items-center">
-                                            {token.last_used_ago && (
-                                                <div className="text-sm text-gray-400">
-                                                    Last used {token.last_used_ago}
-                                                </div>
-                                            )}
-
-                                            {availablePermissions.length > 0 ? (
-                                                <Button
-                                                    variant="link"
-                                                    className="cursor-pointer ml-6 text-sm text-gray-400"
-                                                    onClick={() => manageApiTokenPermissions(token)}
-                                                >
-                                                    Permissions
-                                                </Button>
-                                            ) : null}
-
-                                            <Button
-                                                variant="link"
-                                                className="cursor-pointer ml-6 text-sm text-red-500"
-                                                onClick={() => confirmApiTokenDeletion(token)}
-                                            >
-                                                Delete
-                                            </Button>
-                                        </div>
-                                    </div>
-                                ))}
+                    <div className="mt-10 sm:mt-0 md:grid md:grid-cols-3 md:gap-6">
+                        <div className="md:col-span-1">
+                            <div className="px-4 sm:px-0">
+                                <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">
+                                    Manage API Tokens
+                                </h3>
+                                <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                                    You may delete any of your existing tokens if they are no
+                                    longer needed.
+                                </p>
                             </div>
-                        </ActionSection>
+                        </div>
+                        <div className="mt-5 md:mt-0 md:col-span-2">
+                            <Card>
+                                <CardContent className="p-6">
+                                    <div className="space-y-6">
+                                        {tokens.map(token => (
+                                            <div
+                                                className="flex items-center justify-between"
+                                                key={token.id}
+                                            >
+                                                <div className="break-all dark:text-white">
+                                                    {token.name}
+                                                </div>
+
+                                                <div className="flex items-center">
+                                                    {token.last_used_ago && (
+                                                        <div className="text-sm text-gray-400">
+                                                            Last used {token.last_used_ago}
+                                                        </div>
+                                                    )}
+
+                                                    {availablePermissions.length > 0 ? (
+                                                        <Button
+                                                            variant="link"
+                                                            className="cursor-pointer ml-6 text-sm text-gray-400"
+                                                            onClick={() => manageApiTokenPermissions(token)}
+                                                        >
+                                                            Permissions
+                                                        </Button>
+                                                    ) : null}
+
+                                                    <Button
+                                                        variant="link"
+                                                        className="cursor-pointer ml-6 text-sm text-red-500"
+                                                        onClick={() => confirmApiTokenDeletion(token)}
+                                                    >
+                                                        Delete
+                                                    </Button>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        </div>
                     </div>
                 </div>
             ) : null}

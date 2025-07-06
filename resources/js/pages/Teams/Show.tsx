@@ -1,9 +1,16 @@
-import SectionBorder from '@/Components/SectionBorder';
+import { Separator } from '@/Components/ui/separator';
 import AppLayout from '@/Layouts/AppLayout';
 import DeleteTeamForm from '@/Pages/Teams/Partials/DeleteTeamForm';
 import TeamMemberManager from '@/Pages/Teams/Partials/TeamMemberManager';
 import UpdateTeamNameForm from '@/Pages/Teams/Partials/UpdateTeamNameForm';
-import { JetstreamTeamPermissions, Role, Team, TeamInvitation, User } from '@/types';
+import {
+    JetstreamTeamPermissions,
+    Role,
+    Team,
+    TeamInvitation,
+    User,
+    BreadcrumbItem,
+} from '@/types';
 
 interface UserMembership extends User {
     membership: {
@@ -21,23 +28,35 @@ interface Props {
     permissions: JetstreamTeamPermissions;
 }
 
+const breadcrumbs: BreadcrumbItem[] = [
+    {
+        title: 'Team Settings',
+        href: '/teams',
+    },
+];
+
 export default function Show({ team, availableRoles, permissions }: Props) {
     return (
-        <AppLayout
-            title="Team Settings"
-            renderHeader={() => <h2 className="text-xl leading-tight font-semibold text-gray-800 dark:text-gray-200">Team Settings</h2>}
-        >
+        <AppLayout breadcrumbs={breadcrumbs}>
             <div>
                 <div className="mx-auto max-w-7xl py-10 sm:px-6 lg:px-8">
                     <UpdateTeamNameForm team={team} permissions={permissions} />
 
                     <div className="mt-10 sm:mt-0">
-                        <TeamMemberManager team={team} availableRoles={availableRoles} userPermissions={permissions} />
+                        <TeamMemberManager
+                            team={team}
+                            availableRoles={availableRoles}
+                            userPermissions={permissions}
+                        />
                     </div>
 
                     {permissions.canDeleteTeam && !team.personal_team ? (
                         <>
-                            <SectionBorder />
+                            <div className="hidden sm:block">
+                                <div className="py-8">
+                                    <Separator />
+                                </div>
+                            </div>
 
                             <div className="mt-10 sm:mt-0">
                                 <DeleteTeamForm team={team} />

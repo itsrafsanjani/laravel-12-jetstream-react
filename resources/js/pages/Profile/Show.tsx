@@ -5,14 +5,21 @@ import TwoFactorAuthenticationForm from '@/Pages/Profile/Partials/TwoFactorAuthe
 import UpdatePasswordForm from '@/Pages/Profile/Partials/UpdatePasswordForm';
 import UpdateProfileInformationForm from '@/Pages/Profile/Partials/UpdateProfileInformationForm';
 import useTypedPage from '@/Hooks/useTypedPage';
-import SectionBorder from '@/Components/SectionBorder';
+import { Separator } from '@/Components/ui/separator';
 import AppLayout from '@/Layouts/AppLayout';
-import { Session } from '@/types';
+import { Session, BreadcrumbItem } from '@/types';
 
 interface Props {
   sessions: Session[];
   confirmsTwoFactorAuthentication: boolean;
 }
+
+const breadcrumbs: BreadcrumbItem[] = [
+  {
+    title: 'Profile',
+    href: '/user/profile',
+  },
+];
 
 export default function Show({
   sessions,
@@ -21,21 +28,18 @@ export default function Show({
   const page = useTypedPage();
 
   return (
-    <AppLayout
-      title={'Profile'}
-      renderHeader={() => (
-        <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-          Profile
-        </h2>
-      )}
-    >
+    <AppLayout breadcrumbs={breadcrumbs}>
       <div>
         <div className="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
           {page.props.jetstream.canUpdateProfileInformation ? (
             <div>
               <UpdateProfileInformationForm user={page.props.auth.user!} />
 
-              <SectionBorder />
+              <div className="hidden sm:block">
+                <div className="py-8">
+                  <Separator />
+                </div>
+              </div>
             </div>
           ) : null}
 
@@ -43,7 +47,11 @@ export default function Show({
             <div className="mt-10 sm:mt-0">
               <UpdatePasswordForm />
 
-              <SectionBorder />
+              <div className="hidden sm:block">
+                <div className="py-8">
+                  <Separator />
+                </div>
+              </div>
             </div>
           ) : null}
 
@@ -53,7 +61,11 @@ export default function Show({
                 requiresConfirmation={confirmsTwoFactorAuthentication}
               />
 
-              <SectionBorder />
+              <div className="hidden sm:block">
+                <div className="py-8">
+                  <Separator />
+                </div>
+              </div>
             </div>
           ) : null}
 
@@ -63,7 +75,11 @@ export default function Show({
 
           {page.props.jetstream.hasAccountDeletionFeatures ? (
             <>
-              <SectionBorder />
+              <div className="hidden sm:block">
+                <div className="py-8">
+                  <Separator />
+                </div>
+              </div>
 
               <div className="mt-10 sm:mt-0">
                 <DeleteUserForm />
