@@ -1,23 +1,10 @@
-import React, { PropsWithChildren } from 'react';
+import { cn } from '@/lib/utils';
+import { type HTMLAttributes } from 'react';
 
-interface Props {
-  message?: string;
-  className?: string;
-}
-
-export default function InputError({
-  message,
-  className,
-  children,
-}: PropsWithChildren<Props>) {
-  if (!message && !children) {
-    return null;
-  }
-  return (
-    <div className={className}>
-      <p className="text-sm text-red-600 dark:text-red-400">
-        {message || children}
-      </p>
-    </div>
-  );
+export default function InputError({ message, className = '', ...props }: HTMLAttributes<HTMLParagraphElement> & { message?: string }) {
+    return message ? (
+        <p {...props} className={cn('text-sm text-red-600 dark:text-red-400', className)}>
+            {message}
+        </p>
+    ) : null;
 }

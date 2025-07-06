@@ -1,4 +1,4 @@
-import AppLogoIcon from '@/Components/app-logo-icon';
+import AppLogoIcon from '@/Components/AppLogoIcon';
 import { Link } from '@inertiajs/react';
 import { type PropsWithChildren } from 'react';
 

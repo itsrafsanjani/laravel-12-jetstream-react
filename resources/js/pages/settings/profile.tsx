@@ -3,9 +3,9 @@ import { Transition } from '@headlessui/react';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { FormEventHandler } from 'react';
 
-import DeleteUser from '@/Components/delete-user';
-import HeadingSmall from '@/Components/heading-small';
-import InputError from '@/Components/input-error';
+import DeleteUser from '@/Components/DeleteUser';
+import HeadingSmall from '@/Components/HeadingSmall';
+import InputError from '@/Components/InputError';
 import { Button } from '@/Components/ui/button';
 import { Input } from '@/Components/ui/input';
 import { Label } from '@/Components/ui/label';

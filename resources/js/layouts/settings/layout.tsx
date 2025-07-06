@@ -1,4 +1,4 @@
-import Heading from '@/Components/heading';
+import Heading from '@/Components/Heading';
 import { Button } from '@/Components/ui/button';
 import { Separator } from '@/Components/ui/separator';
 import { cn } from '@/lib/utils';

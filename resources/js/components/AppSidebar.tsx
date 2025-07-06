@@ -1,11 +1,11 @@
-import { NavFooter } from '@/Components/nav-footer';
-import { NavMain } from '@/Components/nav-main';
-import { NavUser } from '@/Components/nav-user';
+import { NavFooter } from '@/Components/NavFooter';
+import { NavMain } from '@/Components/NavMain';
+import { NavUser } from '@/Components/NavUser';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader } from '@/Components/ui/sidebar';
 import { SharedData, type NavItem } from '@/types';
 import { usePage } from '@inertiajs/react';
 import { BookOpen, Folder, LayoutGrid } from 'lucide-react';
-import { AppTeamSwitcher } from './app-team-switcher';
+import { AppTeamSwitcher } from './AppTeamSwitcher';
 
 const mainNavItems: NavItem[] = [
     {

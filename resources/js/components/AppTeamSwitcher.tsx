@@ -14,7 +14,7 @@ import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/C
 import { Team, User } from '@/types';
 import { Link, router } from '@inertiajs/react';
 import { useState } from 'react';
-import AppLogo from './app-logo';
+import AppLogo from './AppLogo';
 
 export function AppTeamSwitcher({ user, teams }: { user: User; teams: Team[] }) {
     const { isMobile } = useSidebar();

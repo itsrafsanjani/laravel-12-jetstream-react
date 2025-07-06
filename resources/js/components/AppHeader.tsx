@@ -1,19 +1,19 @@
-import { Breadcrumbs } from '@/Components/breadcrumbs';
-import { Icon } from '@/Components/icon';
+import { Breadcrumbs } from '@/Components/Breadcrumbs';
+import { Icon } from '@/Components/Icon';
 import { Avatar, AvatarFallback, AvatarImage } from '@/Components/ui/avatar';
 import { Button } from '@/Components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/Components/ui/dropdown-menu';
 import { NavigationMenu, NavigationMenuItem, NavigationMenuList, navigationMenuTriggerStyle } from '@/Components/ui/navigation-menu';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/Components/ui/sheet';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/Components/ui/tooltip';
-import { UserMenuContent } from '@/Components/user-menu-content';
+import { UserMenuContent } from '@/Components/UserMenuContent';
 import { useInitials } from '@/Hooks/use-initials';
 import { cn } from '@/lib/utils';
 import { type BreadcrumbItem, type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import { BookOpen, Folder, LayoutGrid, Menu, Search } from 'lucide-react';
-import AppLogo from './app-logo';
-import AppLogoIcon from './app-logo-icon';
+import AppLogo from './AppLogo';
+import AppLogoIcon from './AppLogoIcon';
 import { route } from 'ziggy-js';
 
 const mainNavItems: NavItem[] = [

@@ -1,4 +1,4 @@
-import InputError from '@/Components/input-error';
+import InputError from '@/Components/InputError';
 import AppLayout from '@/Layouts/AppLayout';
 import SettingsLayout from '@/Layouts/settings/layout';
 import { type BreadcrumbItem } from '@/types';
@@ -6,7 +6,7 @@ import { Transition } from '@headlessui/react';
 import { Head, useForm } from '@inertiajs/react';
 import { FormEventHandler, useRef } from 'react';
 
-import HeadingSmall from '@/Components/heading-small';
+import HeadingSmall from '@/Components/HeadingSmall';
 import { Button } from '@/Components/ui/button';
 import { Input } from '@/Components/ui/input';
 import { Label } from '@/Components/ui/label';

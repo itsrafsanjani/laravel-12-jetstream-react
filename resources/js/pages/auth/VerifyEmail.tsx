@@ -3,7 +3,7 @@ import { Head, useForm } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
 import { FormEventHandler } from 'react';
 
-import TextLink from '@/Components/text-link';
+import TextLink from '@/Components/TextLink';
 import { Button } from '@/Components/ui/button';
 import AuthLayout from '@/Layouts/AuthLayout';
 

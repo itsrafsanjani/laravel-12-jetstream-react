@@ -1,5 +1,5 @@
 import { DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from '@/Components/ui/dropdown-menu';
-import { UserInfo } from '@/Components/user-info';
+import { UserInfo } from '@/Components/UserInfo';
 import { useMobileNavigation } from '@/Hooks/use-mobile-navigation';
 import { type User } from '@/types';
 import { Link, router } from '@inertiajs/react';
