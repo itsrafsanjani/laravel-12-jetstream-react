@@ -20,8 +20,7 @@ import {
   TeamInvitation,
   User,
 } from '@/types';
-import { router } from '@inertiajs/core';
-import { useForm } from '@inertiajs/react';
+import { router, useForm } from '@inertiajs/react';
 import classNames from 'classnames';
 import React, { useState } from 'react';
 

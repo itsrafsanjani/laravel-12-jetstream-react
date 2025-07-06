@@ -1,5 +1,5 @@
 import CreateTeamForm from '@/Pages/Teams/Partials/CreateTeamForm';
-import AppLayout from '@/layouts/app-layout';
+import AppLayout from '@/Layouts/AppLayout';
 
 export default function Create() {
     return (

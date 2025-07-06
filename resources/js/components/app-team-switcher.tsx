@@ -9,11 +9,10 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/components/ui/sidebar';
+} from '@/Components/ui/dropdown-menu';
+import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/Components/ui/sidebar';
 import { Team, User } from '@/types';
-import { router } from '@inertiajs/core';
-import { Link } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
 import { useState } from 'react';
 import AppLogo from './app-logo';
 
@@ -23,19 +22,6 @@ export function AppTeamSwitcher({ user, teams }: { user: User; teams: Team[] }) 
 
     if (!activeTeam) {
         return null;
-    }
-
-    function switchToTeam2(e: React.FormEvent, team: Team) {
-        e.preventDefault();
-        router.put(
-            route('current-team.update'),
-            {
-                team_id: team.id,
-            },
-            {
-                preserveState: false,
-            },
-        );
     }
 
     function switchToTeam(team: Team) {

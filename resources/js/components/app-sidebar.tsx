@@ -1,7 +1,7 @@
-import { NavFooter } from '@/components/nav-footer';
-import { NavMain } from '@/components/nav-main';
-import { NavUser } from '@/components/nav-user';
-import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader } from '@/components/ui/sidebar';
+import { NavFooter } from '@/Components/nav-footer';
+import { NavMain } from '@/Components/nav-main';
+import { NavUser } from '@/Components/nav-user';
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader } from '@/Components/ui/sidebar';
 import { SharedData, type NavItem } from '@/types';
 import { usePage } from '@inertiajs/react';
 import { BookOpen, Folder, LayoutGrid } from 'lucide-react';

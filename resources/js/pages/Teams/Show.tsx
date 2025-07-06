@@ -1,5 +1,5 @@
 import SectionBorder from '@/Components/SectionBorder';
-import AppLayout from '@/layouts/app-layout';
+import AppLayout from '@/Layouts/AppLayout';
 import DeleteTeamForm from '@/Pages/Teams/Partials/DeleteTeamForm';
 import TeamMemberManager from '@/Pages/Teams/Partials/TeamMemberManager';
 import UpdateTeamNameForm from '@/Pages/Teams/Partials/UpdateTeamNameForm';
