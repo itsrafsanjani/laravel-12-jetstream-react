@@ -1,6 +1,5 @@
 import { router, useForm } from '@inertiajs/react';
 import axios, { AxiosResponse } from 'axios';
-import classNames from 'classnames';
 import React, { useState } from 'react';
 import ConfirmsPassword from '@/Components/ConfirmsPassword';
 import { Button } from '@/Components/ui/button';
@@ -12,6 +11,8 @@ import InputError from '@/Components/ui/InputError';
 import { Input } from '@/Components/ui/input';
 import { Label } from '@/Components/ui/label';
 import useTypedPage from '@/Hooks/useTypedPage';
+import Heading from '@/Components/Heading';
+import { cn } from '@/lib/utils';
 
 interface Props {
   requiresConfirmation: boolean;
@@ -111,46 +112,40 @@ export default function TwoFactorAuthenticationForm({
     });
   }
 
+  const StatusHeading = () => {
+    if (twoFactorEnabled && !confirming) {
+      return (
+        <h3 className="text-lg font-medium">
+          You have enabled two factor authentication.
+        </h3>
+      );
+    }
+    if (confirming) {
+      return (
+        <h3 className="text-lg font-medium">
+          Finish enabling two factor authentication.
+        </h3>
+      );
+    }
+    return (
+      <h3 className="text-lg font-medium">
+        You have not enabled two factor authentication.
+      </h3>
+    );
+  }
+
   return (
-    <div className="md:grid md:grid-cols-3 md:gap-6">
-      <div className="md:col-span-1">
-        <div className="px-4 sm:px-0">
-          <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">
-            Two Factor Authentication
-          </h3>
-          <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            Add additional security to your account using two factor
-            authentication.
-          </p>
-        </div>
-      </div>
+    <div>
+      <Heading
+        title="Two Factor Authentication"
+        description="Add additional security to your account using two factor authentication."
+      />
+      <Card>
+        <CardContent className="p-6">
+          <div className="space-y-4">
+            <StatusHeading />
 
-      <div className="mt-5 md:mt-0 md:col-span-2">
-        <Card>
-          <CardContent className="p-6">
-            {(() => {
-              if (twoFactorEnabled && !confirming) {
-                return (
-                  <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">
-                    You have enabled two factor authentication.
-                  </h3>
-                );
-              }
-              if (confirming) {
-                return (
-                  <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">
-                    Finish enabling two factor authentication.
-                  </h3>
-                );
-              }
-              return (
-                <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">
-                  You have not enabled two factor authentication.
-                </h3>
-              );
-            })()}
-
-            <div className="mt-3 max-w-xl text-sm text-gray-600 dark:text-gray-400">
+            <div className="mt-3 max-w-xl text-sm">
               <p>
                 When two factor authentication is enabled, you will be prompted
                 for a secure, random token during authentication. You may
@@ -162,8 +157,8 @@ export default function TwoFactorAuthenticationForm({
             {twoFactorEnabled || confirming ? (
               <div>
                 {qrCode ? (
-                  <div>
-                    <div className="mt-4 max-w-xl text-sm text-gray-600 dark:text-gray-400">
+                  <div className="space-y-4">
+                    <div className="mt-4 max-w-xl text-sm">
                       {confirming ? (
                         <p className="font-semibold">
                           To finish enabling two factor authentication, scan the
@@ -186,7 +181,7 @@ export default function TwoFactorAuthenticationForm({
                     />
 
                     {setupKey && (
-                      <div className="mt-4 max-w-xl text-sm text-gray-600 dark:text-gray-400">
+                      <div className="mt-4 max-w-xl text-sm">
                         <p className="font-semibold">
                           Setup Key:{' '}
                           <span
@@ -229,8 +224,8 @@ export default function TwoFactorAuthenticationForm({
                 ) : null}
 
                 {recoveryCodes.length > 0 && !confirming ? (
-                  <div>
-                    <div className="mt-4 max-w-xl text-sm text-gray-600 dark:text-gray-400">
+                  <div className="space-y-4">
+                    <div className="mt-4 max-w-xl text-sm">
                       <p className="font-semibold">
                         Store these recovery codes in a secure password
                         manager. They can be used to recover access to your
@@ -251,21 +246,18 @@ export default function TwoFactorAuthenticationForm({
 
             <div className="mt-5">
               {twoFactorEnabled || confirming ? (
-                <div>
-                  {confirming ? (
-                    <ConfirmsPassword
-                      onConfirm={confirmTwoFactorAuthentication}
-                    >
+                <div className="flex items-center gap-4">
+                  {confirming && (
+                    <ConfirmsPassword onConfirm={confirmTwoFactorAuthentication}>
                       <Button
-                        className={classNames('mr-3', {
-                          'opacity-25': enabling,
-                        })}
+                        type="button"
+                        className={cn({ 'opacity-25': enabling })}
                         disabled={enabling}
                       >
                         Confirm
                       </Button>
                     </ConfirmsPassword>
-                  ) : null}
+                  )}
                   {recoveryCodes.length > 0 && !confirming ? (
                     <ConfirmsPassword onConfirm={regenerateRecoveryCodes}>
                       <Button variant="secondary" className="mr-3">
@@ -282,26 +274,20 @@ export default function TwoFactorAuthenticationForm({
                   ) : null}
 
                   {confirming ? (
-                    <ConfirmsPassword
-                      onConfirm={disableTwoFactorAuthentication}
-                    >
+                    <ConfirmsPassword onConfirm={disableTwoFactorAuthentication}>
                       <Button
                         variant="secondary"
-                        className={classNames('mr-3', {
-                          'opacity-25': disabling,
-                        })}
+                        className={cn({ 'opacity-25': disabling })}
                         disabled={disabling}
                       >
                         Cancel
                       </Button>
                     </ConfirmsPassword>
                   ) : (
-                    <ConfirmsPassword
-                      onConfirm={disableTwoFactorAuthentication}
-                    >
+                    <ConfirmsPassword onConfirm={disableTwoFactorAuthentication}>
                       <Button
                         variant="destructive"
-                        className={classNames({ 'opacity-25': disabling })}
+                        className={cn({ 'opacity-25': disabling })}
                         disabled={disabling}
                       >
                         Disable
@@ -314,7 +300,7 @@ export default function TwoFactorAuthenticationForm({
                   <ConfirmsPassword onConfirm={enableTwoFactorAuthentication}>
                     <Button
                       type="button"
-                      className={classNames({ 'opacity-25': enabling })}
+                      className={cn({ 'opacity-25': enabling })}
                       disabled={enabling}
                     >
                       Enable
@@ -323,9 +309,9 @@ export default function TwoFactorAuthenticationForm({
                 </div>
               )}
             </div>
-          </CardContent>
-        </Card>
-      </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

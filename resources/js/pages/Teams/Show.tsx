@@ -11,6 +11,8 @@ import {
     User,
     BreadcrumbItem,
 } from '@/types';
+import Heading from '@/Components/Heading';
+import useRoute from '@/Hooks/useRoute';
 
 interface UserMembership extends User {
     membership: {
@@ -28,43 +30,47 @@ interface Props {
     permissions: JetstreamTeamPermissions;
 }
 
-const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Team Settings',
-        href: '/teams',
-    },
-];
-
 export default function Show({ team, availableRoles, permissions }: Props) {
+    const route = useRoute();
+    const breadcrumbs: BreadcrumbItem[] = [
+        {
+            title: 'Teams',
+            href: route('teams.show', { team: team.id }),
+        },
+        {
+            title: 'Team Settings',
+            href: route('teams.show', { team: team.id }),
+        }
+    ];
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <div>
-                <div className="mx-auto max-w-7xl py-10 sm:px-6 lg:px-8">
-                    <UpdateTeamNameForm team={team} permissions={permissions} />
+            <Heading
+                title="Team Settings"
+                description="Manage your team's settings."
+            />
+            <UpdateTeamNameForm team={team} permissions={permissions} />
 
-                    <div className="mt-10 sm:mt-0">
-                        <TeamMemberManager
-                            team={team}
-                            availableRoles={availableRoles}
-                            userPermissions={permissions}
-                        />
+            <div className="mt-10 sm:mt-0">
+                <TeamMemberManager
+                    team={team}
+                    availableRoles={availableRoles}
+                    userPermissions={permissions}
+                />
+            </div>
+
+            {permissions.canDeleteTeam && !team.personal_team ? (
+                <>
+                    <div className="hidden sm:block">
+                        <div className="py-8">
+                            <Separator />
+                        </div>
                     </div>
 
-                    {permissions.canDeleteTeam && !team.personal_team ? (
-                        <>
-                            <div className="hidden sm:block">
-                                <div className="py-8">
-                                    <Separator />
-                                </div>
-                            </div>
-
-                            <div className="mt-10 sm:mt-0">
-                                <DeleteTeamForm team={team} />
-                            </div>
-                        </>
-                    ) : null}
-                </div>
-            </div>
+                    <div className="mt-10 sm:mt-0">
+                        <DeleteTeamForm team={team} />
+                    </div>
+                </>
+            ) : null}
         </AppLayout>
     );
 }
