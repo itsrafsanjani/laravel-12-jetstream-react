@@ -1,18 +1,30 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import classNames from 'classnames';
 import React, { PropsWithChildren, useRef, useState } from 'react';
 import useRoute from '@/Hooks/useRoute';
-import DialogModal from '@/Components/DialogModal';
-import InputError from '@/Components/InputError';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
-import SecondaryButton from '@/Components/SecondaryButton';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/Components/ui/dialog';
+import InputError from '@/Components/ui/InputError';
+import { Button } from '@/Components/ui/button';
+import { Input } from '@/Components/ui/input';
 
 interface Props {
   title?: string;
   content?: string;
   button?: string;
   onConfirm(): void;
+}
+
+interface ValidationError {
+  errors: {
+    password: string[];
+  };
 }
 
 export default function ConfirmsPassword({
@@ -54,13 +66,15 @@ export default function ConfirmsPassword({
         closeModal();
         setTimeout(() => onConfirm(), 250);
       })
-      .catch(error => {
-        setForm({
-          ...form,
-          processing: false,
-          error: error.response.data.errors.password[0],
-        });
-        passwordRef.current?.focus();
+      .catch((error: AxiosError<ValidationError>) => {
+        if (error.response?.data?.errors?.password) {
+          setForm({
+            ...form,
+            processing: false,
+            error: error.response.data.errors.password[0],
+          });
+          passwordRef.current?.focus();
+        }
       });
   }
 
@@ -73,12 +87,14 @@ export default function ConfirmsPassword({
     <span>
       <span onClick={startConfirmingPassword}>{children}</span>
 
-      <DialogModal isOpen={confirmingPassword} onClose={closeModal}>
-        <DialogModal.Content title={title}>
-          {content}
-
+      <Dialog open={confirmingPassword} onOpenChange={setConfirmingPassword}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{title}</DialogTitle>
+            <DialogDescription>{content}</DialogDescription>
+          </DialogHeader>
           <div className="mt-4">
-            <TextInput
+            <Input
               ref={passwordRef}
               type="password"
               className="mt-1 block w-3/4"
@@ -91,20 +107,21 @@ export default function ConfirmsPassword({
 
             <InputError message={form.error} className="mt-2" />
           </div>
-        </DialogModal.Content>
+          <DialogFooter>
+            <Button variant="secondary" onClick={closeModal}>
+              Cancel
+            </Button>
 
-        <DialogModal.Footer>
-          <SecondaryButton onClick={closeModal}>Cancel</SecondaryButton>
-
-          <PrimaryButton
-            className={classNames('ml-2', { 'opacity-25': form.processing })}
-            onClick={confirmPassword}
-            disabled={form.processing}
-          >
-            {button}
-          </PrimaryButton>
-        </DialogModal.Footer>
-      </DialogModal>
+            <Button
+              className={classNames('ml-2', { 'opacity-25': form.processing })}
+              onClick={confirmPassword}
+              disabled={form.processing}
+            >
+              {button}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </span>
   );
 }

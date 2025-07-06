@@ -1,8 +1,7 @@
 import ActionMessage from '@/Components/ActionMessage';
 import FormSection from '@/Components/FormSection';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
+import InputError from '@/Components/ui/InputError';
+import { Button } from '@/Components/ui/button';
 import { Input } from '@/Components/ui/input';
 import { Label } from '@/Components/ui/label';
 import useRoute from '@/Hooks/useRoute';
@@ -36,22 +35,22 @@ export default function UpdateTeamNameForm({ team, permissions }: Props) {
             renderActions={
                 permissions.canUpdateTeam
                     ? () => (
-                          <>
-                              <ActionMessage on={form.recentlySuccessful} className="mr-3">
-                                  Saved.
-                              </ActionMessage>
+                        <>
+                            <ActionMessage on={form.recentlySuccessful} className="mr-3">
+                                Saved.
+                            </ActionMessage>
 
-                              <PrimaryButton className={classNames({ 'opacity-25': form.processing })} disabled={form.processing}>
-                                  Save
-                              </PrimaryButton>
-                          </>
-                      )
+                            <Button className={classNames({ 'opacity-25': form.processing })} disabled={form.processing}>
+                                Save
+                            </Button>
+                        </>
+                    )
                     : undefined
             }
         >
             {/* <!-- Team Owner Information --> */}
             <div className="col-span-6">
-                <InputLabel value="Team Owner" />
+                <Label>Team Owner</Label>
 
                 <div className="mt-2 flex items-center">
                     <img className="h-12 w-12 rounded-full object-cover" src={team.owner.profile_photo_url} alt={team.owner.name} />

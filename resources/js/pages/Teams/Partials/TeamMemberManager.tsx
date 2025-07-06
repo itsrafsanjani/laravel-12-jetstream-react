@@ -2,15 +2,19 @@ import useRoute from '@/Hooks/useRoute';
 import useTypedPage from '@/Hooks/useTypedPage';
 import ActionMessage from '@/Components/ActionMessage';
 import ActionSection from '@/Components/ActionSection';
-import ConfirmationModal from '@/Components/ConfirmationModal';
-import DangerButton from '@/Components/DangerButton';
-import DialogModal from '@/Components/DialogModal';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/Components/ui/dialog';
+import { Button } from '@/Components/ui/button';
 import FormSection from '@/Components/FormSection';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
-import SecondaryButton from '@/Components/SecondaryButton';
+import InputError from '@/Components/ui/InputError';
+import { Input } from '@/Components/ui/input';
+import { Label } from '@/Components/ui/label';
 import SectionBorder from '@/Components/SectionBorder';
 import {
   JetstreamTeamPermissions,
@@ -146,14 +150,14 @@ export default function TeamMemberManager({
                   Added.
                 </ActionMessage>
 
-                <PrimaryButton
+                <Button
                   className={classNames({
                     'opacity-25': addTeamMemberForm.processing,
                   })}
                   disabled={addTeamMemberForm.processing}
                 >
                   Add
-                </PrimaryButton>
+                </Button>
               </>
             )}
           >
@@ -166,8 +170,8 @@ export default function TeamMemberManager({
 
             {/* <!-- Member Email --> */}
             <div className="col-span-6 sm:col-span-4">
-              <InputLabel htmlFor="email" value="Email" />
-              <TextInput
+              <Label htmlFor="email">Email</Label>
+              <Input
                 id="email"
                 type="email"
                 className="mt-1 block w-full"
@@ -185,7 +189,7 @@ export default function TeamMemberManager({
             {/* <!-- Role --> */}
             {availableRoles.length > 0 ? (
               <div className="col-span-6 lg:col-span-4">
-                <InputLabel htmlFor="roles" value="Role" />
+                <Label htmlFor="roles">Role</Label>
                 <InputError
                   message={addTeamMemberForm.errors.role}
                   className="mt-2"
@@ -286,12 +290,13 @@ export default function TeamMemberManager({
                   <div className="flex items-center">
                     {/* <!-- Cancel Team Invitation --> */}
                     {userPermissions.canRemoveTeamMembers ? (
-                      <button
+                      <Button
+                        variant="link"
                         className="cursor-pointer ml-6 text-sm text-red-500 focus:outline-none"
                         onClick={() => cancelTeamInvitation(invitation)}
                       >
                         Cancel
-                      </button>
+                      </Button>
                     ) : null}
                   </div>
                 </div>
@@ -331,13 +336,14 @@ export default function TeamMemberManager({
                   <div className="flex items-center">
                     {/* <!-- Manage Team Member Role --> */}
                     {userPermissions.canAddTeamMembers &&
-                    availableRoles.length ? (
-                      <button
-                        className="ml-2 text-sm text-gray-400 underline"
+                      availableRoles.length ? (
+                      <Button
+                        variant="link"
+                        className="ml-2 text-sm text-gray-400"
                         onClick={() => manageRole(user)}
                       >
                         {displayableRole(user.membership.role)}
-                      </button>
+                      </Button>
                     ) : availableRoles.length ? (
                       <div className="ml-2 text-sm text-gray-400">
                         {displayableRole(user.membership.role)}
@@ -346,22 +352,24 @@ export default function TeamMemberManager({
 
                     {/* <!-- Leave Team --> */}
                     {page.props.auth.user?.id === user.id ? (
-                      <button
+                      <Button
+                        variant="link"
                         className="cursor-pointer ml-6 text-sm text-red-500"
                         onClick={confirmLeavingTeam}
                       >
                         Leave
-                      </button>
+                      </Button>
                     ) : null}
 
                     {/* <!-- Remove Team Member --> */}
                     {userPermissions.canRemoveTeamMembers ? (
-                      <button
+                      <Button
+                        variant="link"
                         className="cursor-pointer ml-6 text-sm text-red-500"
                         onClick={() => confirmTeamMemberRemoval(user)}
                       >
                         Remove
-                      </button>
+                      </Button>
                     ) : null}
                   </div>
                 </div>
@@ -372,13 +380,18 @@ export default function TeamMemberManager({
       ) : null}
 
       {/* <!-- Role Management Modal --> */}
-      <DialogModal
-        isOpen={currentlyManagingRole}
-        onClose={() => setCurrentlyManagingRole(false)}
+      <Dialog
+        open={currentlyManagingRole}
+        onOpenChange={setCurrentlyManagingRole}
       >
-        <DialogModal.Content title={'Manage Role'}></DialogModal.Content>
-        {managingRoleFor ? (
-          <div>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Manage Role</DialogTitle>
+            <DialogDescription>
+              Select the new role for this team member.
+            </DialogDescription>
+          </DialogHeader>
+          {managingRoleFor ? (
             <div className="relative z-0 mt-1 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer">
               {availableRoles.map((role, i) => (
                 <button
@@ -389,7 +402,7 @@ export default function TeamMemberManager({
                       'border-t border-gray-200 dark:border-gray-700 focus:border-none rounded-t-none':
                         i > 0,
                       'rounded-b-none':
-                        i !== Object.keys(availableRoles).length - 1,
+                        i != Object.keys(availableRoles).length - 1,
                     },
                   )}
                   onClick={() => updateRoleForm.setData('role', role.key)}
@@ -399,7 +412,7 @@ export default function TeamMemberManager({
                     className={classNames({
                       'opacity-50':
                         updateRoleForm.data.role &&
-                        updateRoleForm.data.role !== role.key,
+                        updateRoleForm.data.role != role.key,
                     })}
                   >
                     {/* <!-- Role Name --> */}
@@ -409,13 +422,14 @@ export default function TeamMemberManager({
                           'text-sm text-gray-600 dark:text-gray-400',
                           {
                             'font-semibold':
-                              updateRoleForm.data.role === role.key,
+                              updateRoleForm.data.role == role.key,
                           },
                         )}
                       >
                         {role.name}
                       </div>
-                      {updateRoleForm.data.role === role.key ? (
+
+                      {updateRoleForm.data.role == role.key ? (
                         <svg
                           className="ml-2 h-5 w-5 text-green-400"
                           fill="none"
@@ -438,74 +452,83 @@ export default function TeamMemberManager({
                 </button>
               ))}
             </div>
-          </div>
-        ) : null}
-        <DialogModal.Footer>
-          <SecondaryButton onClick={() => setCurrentlyManagingRole(false)}>
-            Cancel
-          </SecondaryButton>
+          ) : null}
+          <DialogFooter>
+            <Button
+              variant="secondary"
+              onClick={() => setCurrentlyManagingRole(false)}
+            >
+              Cancel
+            </Button>
 
-          <PrimaryButton
-            onClick={updateRole}
-            className={classNames('ml-2', {
-              'opacity-25': updateRoleForm.processing,
-            })}
-            disabled={updateRoleForm.processing}
-          >
-            Save
-          </PrimaryButton>
-        </DialogModal.Footer>
-      </DialogModal>
+            <Button
+              className="ml-2"
+              onClick={updateRole}
+              disabled={updateRoleForm.processing}
+            >
+              Save
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* <!-- Leave Team Confirmation Modal --> */}
-      <ConfirmationModal
-        isOpen={confirmingLeavingTeam}
-        onClose={() => setConfirmingLeavingTeam(false)}
-      >
-        <ConfirmationModal.Content title={'Leave Team'}>
-          Are you sure you would like to leave this team?
-        </ConfirmationModal.Content>
-        <ConfirmationModal.Footer>
-          <SecondaryButton onClick={() => setConfirmingLeavingTeam(false)}>
-            Cancel
-          </SecondaryButton>
+      <Dialog open={confirmingLeavingTeam} onOpenChange={setConfirmingLeavingTeam}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Leave Team</DialogTitle>
+            <DialogDescription>
+              Are you sure you would like to leave this team?
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              variant="secondary"
+              onClick={() => setConfirmingLeavingTeam(false)}
+            >
+              Cancel
+            </Button>
 
-          <DangerButton
-            onClick={leaveTeam}
-            className={classNames('ml-2', {
-              'opacity-25': leaveTeamForm.processing,
-            })}
-            disabled={leaveTeamForm.processing}
-          >
-            Leave
-          </DangerButton>
-        </ConfirmationModal.Footer>
-      </ConfirmationModal>
+            <Button
+              variant="destructive"
+              className="ml-2"
+              onClick={leaveTeam}
+              disabled={leaveTeamForm.processing}
+            >
+              Leave
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* <!-- Remove Team Member Confirmation Modal --> */}
-      <ConfirmationModal
-        isOpen={!!teamMemberBeingRemoved}
-        onClose={() => setTeamMemberBeingRemoved(null)}
-      >
-        <ConfirmationModal.Content title={'Remove Team Member'}>
-          Are you sure you would like to remove this person from the team?
-        </ConfirmationModal.Content>
-        <ConfirmationModal.Footer>
-          <SecondaryButton onClick={() => setTeamMemberBeingRemoved(null)}>
-            Cancel
-          </SecondaryButton>
+      <Dialog open={!!teamMemberBeingRemoved} onOpenChange={open => !open && setTeamMemberBeingRemoved(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Remove Team Member</DialogTitle>
+            <DialogDescription>
+              Are you sure you would like to remove this person from the team?
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              variant="secondary"
+              onClick={() => setTeamMemberBeingRemoved(null)}
+            >
+              Cancel
+            </Button>
 
-          <DangerButton
-            onClick={removeTeamMember}
-            className={classNames('ml-2', {
-              'opacity-25': removeTeamMemberForm.processing,
-            })}
-            disabled={removeTeamMemberForm.processing}
-          >
-            Remove
-          </DangerButton>
-        </ConfirmationModal.Footer>
-      </ConfirmationModal>
+            <Button
+              variant="destructive"
+              className="ml-2"
+              onClick={removeTeamMember}
+              disabled={removeTeamMemberForm.processing}
+            >
+              Remove
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

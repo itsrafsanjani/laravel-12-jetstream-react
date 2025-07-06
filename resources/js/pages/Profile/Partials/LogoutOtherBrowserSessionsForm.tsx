@@ -4,11 +4,17 @@ import React, { useRef, useState } from 'react';
 import useRoute from '@/Hooks/useRoute';
 import ActionMessage from '@/Components/ActionMessage';
 import ActionSection from '@/Components/ActionSection';
-import DialogModal from '@/Components/DialogModal';
-import InputError from '@/Components/InputError';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
-import SecondaryButton from '@/Components/SecondaryButton';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/Components/ui/dialog';
+import InputError from '@/Components/ui/InputError';
+import { Button } from '@/Components/ui/button';
+import { Input } from '@/Components/ui/input';
 import { Session } from '@/types';
 
 interface Props {
@@ -118,9 +124,9 @@ export default function LogoutOtherBrowserSessions({ sessions }: Props) {
       ) : null}
 
       <div className="flex items-center mt-5">
-        <PrimaryButton onClick={confirmLogout}>
+        <Button onClick={confirmLogout}>
           Log Out Other Browser Sessions
-        </PrimaryButton>
+        </Button>
 
         <ActionMessage on={form.recentlySuccessful} className="ml-3">
           Done.
@@ -128,12 +134,17 @@ export default function LogoutOtherBrowserSessions({ sessions }: Props) {
       </div>
 
       {/* <!-- Log Out Other Devices Confirmation Modal --> */}
-      <DialogModal isOpen={confirmingLogout} onClose={closeModal}>
-        <DialogModal.Content title={'Log Out Other Browser Sessions'}>
-          Please enter your password to confirm you would like to log out of
-          your other browser sessions across all of your devices.
+      <Dialog open={confirmingLogout} onOpenChange={setConfirmingLogout}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Log Out Other Browser Sessions</DialogTitle>
+            <DialogDescription>
+              Please enter your password to confirm you would like to log out of
+              your other browser sessions across all of your devices.
+            </DialogDescription>
+          </DialogHeader>
           <div className="mt-4">
-            <TextInput
+            <Input
               type="password"
               className="mt-1 block w-3/4"
               placeholder="Password"
@@ -144,20 +155,21 @@ export default function LogoutOtherBrowserSessions({ sessions }: Props) {
 
             <InputError message={form.errors.password} className="mt-2" />
           </div>
-        </DialogModal.Content>
+          <DialogFooter>
+            <Button variant="secondary" onClick={closeModal}>
+              Cancel
+            </Button>
 
-        <DialogModal.Footer>
-          <SecondaryButton onClick={closeModal}>Cancel</SecondaryButton>
-
-          <PrimaryButton
-            onClick={logoutOtherBrowserSessions}
-            className={classNames('ml-2', { 'opacity-25': form.processing })}
-            disabled={form.processing}
-          >
-            Log Out Other Browser Sessions
-          </PrimaryButton>
-        </DialogModal.Footer>
-      </DialogModal>
+            <Button
+              onClick={logoutOtherBrowserSessions}
+              className={classNames('ml-2', { 'opacity-25': form.processing })}
+              disabled={form.processing}
+            >
+              Log Out Other Browser Sessions
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </ActionSection>
   );
 }

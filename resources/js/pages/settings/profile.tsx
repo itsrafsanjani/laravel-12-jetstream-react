@@ -5,17 +5,17 @@ import { FormEventHandler } from 'react';
 
 import DeleteUser from '@/Components/DeleteUser';
 import HeadingSmall from '@/Components/HeadingSmall';
-import InputError from '@/Components/InputError';
+import InputError from '@/Components/ui/InputError';
 import { Button } from '@/Components/ui/button';
 import { Input } from '@/Components/ui/input';
 import { Label } from '@/Components/ui/label';
 import AppLayout from '@/Layouts/AppLayout';
-import SettingsLayout from '@/Layouts/settings/layout';
+import SettingsLayout from '@/Layouts/Settings/layout';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Profile Settings',
-        href: '/Settings/profile',
+        href: '/settings/profile',
     },
 ];
 
@@ -28,8 +28,8 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
     const { auth } = usePage<SharedData>().props;
 
     const { data, setData, patch, errors, processing, recentlySuccessful } = useForm<Required<ProfileForm>>({
-        name: auth.user.name,
-        email: auth.user.email,
+        name: auth.user!.name,
+        email: auth.user!.email,
     });
 
     const submit: FormEventHandler = (e) => {
@@ -82,7 +82,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                             <InputError className="mt-2" message={errors.email} />
                         </div>
 
-                        {mustVerifyEmail && auth.user.email_verified_at === null && (
+                        {mustVerifyEmail && auth.user!.email_verified_at === null && (
                             <div>
                                 <p className="-mt-4 text-sm text-muted-foreground">
                                     Your email address is unverified.{' '}

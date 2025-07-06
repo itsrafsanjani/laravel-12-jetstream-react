@@ -3,10 +3,10 @@ import classNames from 'classnames';
 import React, { useRef, useState } from 'react';
 import useRoute from '@/Hooks/useRoute';
 import AuthenticationCard from '@/Components/AuthenticationCard';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
-import InputError from '@/Components/InputError';
+import { Label } from '@/Components/ui/label';
+import { Button } from '@/Components/ui/button';
+import { Input } from '@/Components/ui/input';
+import InputError from '@/Components/ui/InputError';
 
 export default function TwoFactorChallenge() {
   const route = useRoute();
@@ -52,8 +52,8 @@ export default function TwoFactorChallenge() {
       <form onSubmit={onSubmit}>
         {recovery ? (
           <div>
-            <InputLabel htmlFor="recovery_code">Recovery Code</InputLabel>
-            <TextInput
+            <Label htmlFor="recovery_code">Recovery Code</Label>
+            <Input
               id="recovery_code"
               type="text"
               className="mt-1 block w-full"
@@ -68,8 +68,8 @@ export default function TwoFactorChallenge() {
           </div>
         ) : (
           <div>
-            <InputLabel htmlFor="code">Code</InputLabel>
-            <TextInput
+            <Label htmlFor="code">Code</Label>
+            <Input
               id="code"
               type="text"
               inputMode="numeric"
@@ -85,20 +85,20 @@ export default function TwoFactorChallenge() {
         )}
 
         <div className="flex items-center justify-end mt-4">
-          <button
+          <Button
             type="button"
-            className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 underline cursor-pointer"
+            variant="link"
             onClick={toggleRecovery}
           >
             {recovery ? 'Use an authentication code' : 'Use a recovery code'}
-          </button>
+          </Button>
 
-          <PrimaryButton
-            className={classNames('ml-4', { 'opacity-25': form.processing })}
+          <Button
+            className={classNames({ 'opacity-25': form.processing })}
             disabled={form.processing}
           >
             Log in
-          </PrimaryButton>
+          </Button>
         </div>
       </form>
     </AuthenticationCard>

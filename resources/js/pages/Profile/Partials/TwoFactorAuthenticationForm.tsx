@@ -1,16 +1,13 @@
-import { router } from '@inertiajs/core';
-import { useForm } from '@inertiajs/react';
-import axios from 'axios';
+import { router, useForm } from '@inertiajs/react';
+import axios, { AxiosResponse } from 'axios';
 import classNames from 'classnames';
 import React, { useState } from 'react';
 import ActionSection from '@/Components/ActionSection';
 import ConfirmsPassword from '@/Components/ConfirmsPassword';
-import DangerButton from '@/Components/DangerButton';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import SecondaryButton from '@/Components/SecondaryButton';
-import TextInput from '@/Components/TextInput';
+import { Button } from '@/Components/ui/button';
+import InputError from '@/Components/ui/InputError';
+import { Input } from '@/Components/ui/input';
+import { Label } from '@/Components/ui/label';
 import useTypedPage from '@/Hooks/useTypedPage';
 
 interface Props {
@@ -57,9 +54,11 @@ export default function TwoFactorAuthenticationForm({
   }
 
   function showSetupKey() {
-    return axios.get('/user/two-factor-secret-key').then(response => {
-      setSetupKey(response.data.secretKey);
-    });
+    return axios
+      .get('/user/two-factor-secret-key')
+      .then((response: AxiosResponse<{ secretKey: string }>) => {
+        setSetupKey(response.data.secretKey);
+      });
   }
 
   function confirmTwoFactorAuthentication() {
@@ -76,15 +75,19 @@ export default function TwoFactorAuthenticationForm({
   }
 
   function showQrCode() {
-    return axios.get('/user/two-factor-qr-code').then(response => {
-      setQrCode(response.data.svg);
-    });
+    return axios
+      .get('/user/two-factor-qr-code')
+      .then((response: AxiosResponse<{ svg: string }>) => {
+        setQrCode(response.data.svg);
+      });
   }
 
   function showRecoveryCodes() {
-    return axios.get('/user/two-factor-recovery-codes').then(response => {
-      setRecoveryCodes(response.data);
-    });
+    return axios
+      .get('/user/two-factor-recovery-codes')
+      .then((response: AxiosResponse<string[]>) => {
+        setRecoveryCodes(response.data);
+      });
   }
 
   function regenerateRecoveryCodes() {
@@ -181,9 +184,9 @@ export default function TwoFactorAuthenticationForm({
 
               {confirming && (
                 <div className="mt-4">
-                  <InputLabel htmlFor="code" value="Code" />
+                  <Label htmlFor="code">Code</Label>
 
-                  <TextInput
+                  <Input
                     id="code"
                     type="text"
                     name="code"
@@ -231,59 +234,61 @@ export default function TwoFactorAuthenticationForm({
           <div>
             {confirming ? (
               <ConfirmsPassword onConfirm={confirmTwoFactorAuthentication}>
-                <PrimaryButton
+                <Button
                   className={classNames('mr-3', { 'opacity-25': enabling })}
                   disabled={enabling}
                 >
                   Confirm
-                </PrimaryButton>
+                </Button>
               </ConfirmsPassword>
             ) : null}
             {recoveryCodes.length > 0 && !confirming ? (
               <ConfirmsPassword onConfirm={regenerateRecoveryCodes}>
-                <SecondaryButton className="mr-3">
+                <Button variant="secondary" className="mr-3">
                   Regenerate Recovery Codes
-                </SecondaryButton>
+                </Button>
               </ConfirmsPassword>
             ) : null}
             {recoveryCodes.length === 0 && !confirming ? (
               <ConfirmsPassword onConfirm={showRecoveryCodes}>
-                <SecondaryButton className="mr-3">
+                <Button variant="secondary" className="mr-3">
                   Show Recovery Codes
-                </SecondaryButton>
+                </Button>
               </ConfirmsPassword>
             ) : null}
 
             {confirming ? (
               <ConfirmsPassword onConfirm={disableTwoFactorAuthentication}>
-                <SecondaryButton
+                <Button
+                  variant="secondary"
                   className={classNames('mr-3', { 'opacity-25': disabling })}
                   disabled={disabling}
                 >
                   Cancel
-                </SecondaryButton>
+                </Button>
               </ConfirmsPassword>
             ) : (
               <ConfirmsPassword onConfirm={disableTwoFactorAuthentication}>
-                <DangerButton
+                <Button
+                  variant="destructive"
                   className={classNames({ 'opacity-25': disabling })}
                   disabled={disabling}
                 >
                   Disable
-                </DangerButton>
+                </Button>
               </ConfirmsPassword>
             )}
           </div>
         ) : (
           <div>
             <ConfirmsPassword onConfirm={enableTwoFactorAuthentication}>
-              <PrimaryButton
+              <Button
                 type="button"
                 className={classNames({ 'opacity-25': enabling })}
                 disabled={enabling}
               >
                 Enable
-              </PrimaryButton>
+              </Button>
             </ConfirmsPassword>
           </div>
         )}

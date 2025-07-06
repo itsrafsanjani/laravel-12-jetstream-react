@@ -1,8 +1,15 @@
 import useRoute from '@/Hooks/useRoute';
 import ActionSection from '@/Components/ActionSection';
-import ConfirmationModal from '@/Components/ConfirmationModal';
-import DangerButton from '@/Components/DangerButton';
-import SecondaryButton from '@/Components/SecondaryButton';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/Components/ui/dialog';
+import { Button } from '@/Components/ui/button';
 import { Team } from '@/types';
 import { useForm } from '@inertiajs/react';
 import classNames from 'classnames';
@@ -16,10 +23,6 @@ export default function DeleteTeamForm({ team }: Props) {
   const route = useRoute();
   const [confirmingTeamDeletion, setConfirmingTeamDeletion] = useState(false);
   const form = useForm({});
-
-  function confirmTeamDeletion() {
-    setConfirmingTeamDeletion(true);
-  }
 
   function deleteTeam() {
     form.delete(route('teams.destroy', [team]), {
@@ -39,33 +42,41 @@ export default function DeleteTeamForm({ team }: Props) {
       </div>
 
       <div className="mt-5">
-        <DangerButton onClick={confirmTeamDeletion}>Delete Team</DangerButton>
+        <Dialog open={confirmingTeamDeletion} onOpenChange={setConfirmingTeamDeletion}>
+          <DialogTrigger asChild>
+            <Button variant="destructive">Delete Team</Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Delete Team</DialogTitle>
+              <DialogDescription>
+                Are you sure you want to delete this team? Once a team is
+                deleted, all of its resources and data will be permanently
+                deleted.
+              </DialogDescription>
+            </DialogHeader>
+            <DialogFooter>
+              <Button
+                variant="secondary"
+                onClick={() => setConfirmingTeamDeletion(false)}
+              >
+                Cancel
+              </Button>
+
+              <Button
+                variant="destructive"
+                onClick={deleteTeam}
+                className={classNames('ml-2', {
+                  'opacity-25': form.processing,
+                })}
+                disabled={form.processing}
+              >
+                Delete Team
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
-
-      {/* <!-- Delete Team Confirmation Modal --> */}
-      <ConfirmationModal
-        isOpen={confirmingTeamDeletion}
-        onClose={() => setConfirmingTeamDeletion(false)}
-      >
-        <ConfirmationModal.Content title={'Delete Team'}>
-          Are you sure you want to delete this team? Once a team is deleted, all
-          of its resources and data will be permanently deleted.
-        </ConfirmationModal.Content>
-
-        <ConfirmationModal.Footer>
-          <SecondaryButton onClick={() => setConfirmingTeamDeletion(false)}>
-            Cancel
-          </SecondaryButton>
-
-          <DangerButton
-            onClick={deleteTeam}
-            className={classNames('ml-2', { 'opacity-25': form.processing })}
-            disabled={form.processing}
-          >
-            Delete Team
-          </DangerButton>
-        </ConfirmationModal.Footer>
-      </ConfirmationModal>
     </ActionSection>
   );
 }

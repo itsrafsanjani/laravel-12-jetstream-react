@@ -4,10 +4,10 @@ import React, { useRef } from 'react';
 import useRoute from '@/Hooks/useRoute';
 import ActionMessage from '@/Components/ActionMessage';
 import FormSection from '@/Components/FormSection';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
+import InputError from '@/Components/ui/InputError';
+import { Input } from '@/Components/ui/input';
+import { Label } from '@/Components/ui/label';
+import { Button } from '@/Components/ui/button';
 
 export default function UpdatePasswordForm() {
   const route = useRoute();
@@ -51,18 +51,18 @@ export default function UpdatePasswordForm() {
             Saved.
           </ActionMessage>
 
-          <PrimaryButton
+          <Button
             className={classNames({ 'opacity-25': form.processing })}
             disabled={form.processing}
           >
             Save
-          </PrimaryButton>
+          </Button>
         </>
       )}
     >
       <div className="col-span-6 sm:col-span-4">
-        <InputLabel htmlFor="current_password">Current Password</InputLabel>
-        <TextInput
+        <Label htmlFor="current_password">Current Password</Label>
+        <Input
           id="current_password"
           type="password"
           className="mt-1 block w-full"
@@ -77,8 +77,8 @@ export default function UpdatePasswordForm() {
       </div>
 
       <div className="col-span-6 sm:col-span-4">
-        <InputLabel htmlFor="password">New Password</InputLabel>
-        <TextInput
+        <Label htmlFor="password">New Password</Label>
+        <Input
           id="password"
           type="password"
           className="mt-1 block w-full"
@@ -91,10 +91,10 @@ export default function UpdatePasswordForm() {
       </div>
 
       <div className="col-span-6 sm:col-span-4">
-        <InputLabel htmlFor="password_confirmation">
+        <Label htmlFor="password_confirmation">
           Confirm Password
-        </InputLabel>
-        <TextInput
+        </Label>
+        <Input
           id="password_confirmation"
           type="password"
           className="mt-1 block w-full"
