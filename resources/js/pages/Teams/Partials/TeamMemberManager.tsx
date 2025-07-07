@@ -9,15 +9,13 @@ import {
     DialogTitle,
 } from '@/Components/ui/dialog';
 import { Button } from '@/Components/ui/button';
-import {
-    Card,
-    CardContent,
-    CardFooter,
-} from '@/Components/ui/card';
+import { Avatar, AvatarFallback, AvatarImage } from '@/Components/ui/avatar';
+import { Badge } from '@/Components/ui/badge';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select';
 import InputError from '@/Components/ui/InputError';
 import { Input } from '@/Components/ui/input';
 import { Label } from '@/Components/ui/label';
-import { Separator } from '@/Components/ui/separator';
+import HeadingSmall from '@/Components/HeadingSmall';
 import {
     JetstreamTeamPermissions,
     Nullable,
@@ -27,8 +25,10 @@ import {
     User,
 } from '@/types';
 import { router, useForm } from '@inertiajs/react';
-import classNames from 'classnames';
 import React, { useState } from 'react';
+import { cn } from '@/lib/utils';
+import { Settings, Trash2, UserMinus } from 'lucide-react';
+import { Transition } from '@headlessui/react';
 
 interface UserMembership extends User {
     membership: {
@@ -130,353 +130,235 @@ export default function TeamMemberManager({
         return availableRoles.find(r => r.key === role)?.name;
     }
 
+    function getRoleVariant(role: string): "default" | "secondary" | "destructive" | "outline" {
+        switch (role) {
+            case 'admin':
+                return 'destructive';
+            case 'editor':
+                return 'default';
+            default:
+                return 'secondary';
+        }
+    }
+
     return (
-        <div>
-            {userPermissions.canAddTeamMembers ? (
-                <div>
-                    <div className="hidden sm:block">
-                        <div className="py-8">
-                            <Separator />
+        <div className="space-y-12">
+            {/* Add Team Member Section */}
+            {userPermissions.canAddTeamMembers && (
+                <div className="space-y-6">
+                    <HeadingSmall title="Add team member" description="Invite a new team member to collaborate with you" />
+
+                    <form
+                        onSubmit={e => {
+                            e.preventDefault();
+                            addTeamMember();
+                        }}
+                        className="space-y-6"
+                    >
+                        <div className="grid gap-2">
+                            <Label htmlFor="email">Email Address</Label>
+                            <Input
+                                id="email"
+                                type="email"
+                                className="mt-1 block w-full"
+                                placeholder="Enter email address"
+                                value={addTeamMemberForm.data.email}
+                                onChange={e =>
+                                    addTeamMemberForm.setData(
+                                        'email',
+                                        e.currentTarget.value,
+                                    )
+                                }
+                            />
+                            <InputError className="mt-2" message={addTeamMemberForm.errors.email} />
                         </div>
-                    </div>
 
-                    <div className="md:grid md:grid-cols-3 md:gap-6">
-                        <div className="md:col-span-1">
-                            <div className="px-4 sm:px-0">
-                                <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">
-                                    Add Team Member
-                                </h3>
-                                <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                                    Add a new team member to your team, allowing them to
-                                    collaborate with you.
-                                </p>
-                            </div>
-                        </div>
-                        <div className="mt-5 md:mt-0 md:col-span-2">
-                            <form
-                                onSubmit={e => {
-                                    e.preventDefault();
-                                    addTeamMember();
-                                }}
-                            >
-                                <Card>
-                                    <CardContent className="p-6">
-                                        <div className="grid grid-cols-6 gap-6">
-                                            <div className="col-span-6">
-                                                <div className="max-w-xl text-sm text-gray-600 dark:text-gray-400">
-                                                    Please provide the email address of the person you
-                                                    would like to add to this team.
-                                                </div>
-                                            </div>
-
-                                            {/* <!-- Member Email --> */}
-                                            <div className="col-span-6 sm:col-span-4">
-                                                <Label htmlFor="email">Email</Label>
-                                                <Input
-                                                    id="email"
-                                                    type="email"
-                                                    className="mt-1 block w-full"
-                                                    value={addTeamMemberForm.data.email}
-                                                    onChange={e =>
-                                                        addTeamMemberForm.setData(
-                                                            'email',
-                                                            e.currentTarget.value,
-                                                        )
-                                                    }
-                                                />
-                                                <InputError
-                                                    message={addTeamMemberForm.errors.email}
-                                                    className="mt-2"
-                                                />
-                                            </div>
-
-                                            {/* <!-- Role --> */}
-                                            {availableRoles.length > 0 ? (
-                                                <div className="col-span-6 lg:col-span-4">
-                                                    <Label htmlFor="roles">Role</Label>
-                                                    <InputError
-                                                        message={addTeamMemberForm.errors.role}
-                                                        className="mt-2"
-                                                    />
-
-                                                    <div className="relative z-0 mt-1 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer">
-                                                        {availableRoles.map((role, i) => (
-                                                            <button
-                                                                type="button"
-                                                                className={classNames(
-                                                                    'relative px-4 py-3 inline-flex w-full rounded-lg focus:z-10 focus:outline-none focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-600',
-                                                                    {
-                                                                        'border-t border-gray-200 dark:border-gray-700 focus:border-none rounded-t-none':
-                                                                            i > 0,
-                                                                        'rounded-b-none':
-                                                                            i !=
-                                                                            Object.keys(availableRoles).length - 1,
-                                                                    },
-                                                                )}
-                                                                onClick={() =>
-                                                                    addTeamMemberForm.setData('role', role.key)
-                                                                }
-                                                                key={role.key}
-                                                            >
-                                                                <div
-                                                                    className={classNames({
-                                                                        'opacity-50':
-                                                                            addTeamMemberForm.data.role &&
-                                                                            addTeamMemberForm.data.role != role.key,
-                                                                    })}
-                                                                >
-                                                                    {/* <!-- Role Name --> */}
-                                                                    <div className="flex items-center">
-                                                                        <div
-                                                                            className={classNames(
-                                                                                'text-sm text-gray-600 dark:text-gray-400',
-                                                                                {
-                                                                                    'font-semibold':
-                                                                                        addTeamMemberForm.data.role ==
-                                                                                        role.key,
-                                                                                },
-                                                                            )}
-                                                                        >
-                                                                            {role.name}
-                                                                        </div>
-
-                                                                        {addTeamMemberForm.data.role ==
-                                                                            role.key ? (
-                                                                            <svg
-                                                                                className="ml-2 h-5 w-5 text-green-400"
-                                                                                fill="none"
-                                                                                strokeLinecap="round"
-                                                                                strokeLinejoin="round"
-                                                                                strokeWidth="2"
-                                                                                stroke="currentColor"
-                                                                                viewBox="0 0 24 24"
-                                                                            >
-                                                                                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                                                            </svg>
-                                                                        ) : null}
-                                                                    </div>
-
-                                                                    {/* <!-- Role Description --> */}
-                                                                    <div className="mt-2 text-xs text-gray-600 dark:text-gray-400">
-                                                                        {role.description}
-                                                                    </div>
-                                                                </div>
-                                                            </button>
-                                                        ))}
-                                                    </div>
-                                                </div>
-                                            ) : null}
-                                        </div>
-                                    </CardContent>
-
-                                    <CardFooter>
-                                        <div className="flex items-center justify-end text-right">
-                                            {addTeamMemberForm.recentlySuccessful && (
-                                                <div className="mr-3">
-                                                    Added.
-                                                </div>
+                        {availableRoles.length > 0 && (
+                            <div className="grid gap-2">
+                                <Label htmlFor="role">Role</Label>
+                                <Select
+                                    value={addTeamMemberForm.data.role || ''}
+                                    onValueChange={value =>
+                                        addTeamMemberForm.setData('role', value)
+                                    }
+                                >
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Select a role">
+                                            {addTeamMemberForm.data.role && (
+                                                <span className="font-medium">
+                                                    {availableRoles.find(r => r.key === addTeamMemberForm.data.role)?.name}
+                                                </span>
                                             )}
-
-                                            <Button
-                                                className={classNames({
-                                                    'opacity-25': addTeamMemberForm.processing,
-                                                })}
-                                                disabled={addTeamMemberForm.processing}
-                                            >
-                                                Add
-                                            </Button>
-                                        </div>
-                                    </CardFooter>
-                                </Card>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            ) : null}
-
-            {team.team_invitations.length > 0 && userPermissions.canAddTeamMembers ? (
-                <div>
-                    <div className="hidden sm:block">
-                        <div className="py-8">
-                            <Separator />
-                        </div>
-                    </div>
-
-                    <div className="mt-10 sm:mt-0 md:grid md:grid-cols-3 md:gap-6">
-                        <div className="md:col-span-1">
-                            <div className="px-4 sm:px-0">
-                                <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">
-                                    Pending Team Invitations
-                                </h3>
-                                <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                                    These people have been invited to your team and have been
-                                    sent an invitation email. They may join the team by
-                                    accepting the email invitation.
-                                </p>
-                            </div>
-                        </div>
-
-                        <div className="mt-5 md:mt-0 md:col-span-2">
-                            <Card>
-                                <CardContent className="p-6">
-                                    <div className="space-y-6">
-                                        {team.team_invitations.map(invitation => (
-                                            <div
-                                                className="flex items-center justify-between"
-                                                key={invitation.id}
-                                            >
-                                                <div className="text-gray-600 dark:text-gray-400">
-                                                    {invitation.email}
+                                        </SelectValue>
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {availableRoles.map(role => (
+                                            <SelectItem key={role.key} value={role.key}>
+                                                <div className="flex flex-col">
+                                                    <span className="font-medium">{role.name}</span>
+                                                    <span className="text-xs text-muted-foreground">
+                                                        {role.description}
+                                                    </span>
                                                 </div>
-
-                                                <div className="flex items-center">
-                                                    {userPermissions.canRemoveTeamMembers ? (
-                                                        <Button
-                                                            variant="link"
-                                                            className="cursor-pointer ml-6 text-sm text-red-500 focus:outline-none"
-                                                            onClick={() => cancelTeamInvitation(invitation)}
-                                                        >
-                                                            Cancel
-                                                        </Button>
-                                                    ) : null}
-                                                </div>
-                                            </div>
+                                            </SelectItem>
                                         ))}
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        </div>
-                    </div>
-                </div>
-            ) : null}
-
-            {team.users.length > 0 ? (
-                <div>
-                    <div className="hidden sm:block">
-                        <div className="py-8">
-                            <Separator />
-                        </div>
-                    </div>
-
-                    <div className="mt-10 sm:mt-0 md:grid md:grid-cols-3 md:gap-6">
-                        <div className="md:col-span-1">
-                            <div className="px-4 sm:px-0">
-                                <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">
-                                    Team Members
-                                </h3>
-                                <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                                    All of the people that are part of this team.
-                                </p>
+                                    </SelectContent>
+                                </Select>
+                                <InputError className="mt-2" message={addTeamMemberForm.errors.role} />
                             </div>
+                        )}
+
+                        <div className="flex items-center gap-4">
+                            <Button
+                                type="submit"
+                                disabled={addTeamMemberForm.processing}
+                                className={cn({
+                                    'opacity-50': addTeamMemberForm.processing,
+                                })}
+                            >
+                                Send Invitation
+                            </Button>
+
+                            <Transition
+                                show={addTeamMemberForm.recentlySuccessful}
+                                enter="transition ease-in-out"
+                                enterFrom="opacity-0"
+                                leave="transition ease-in-out"
+                                leaveTo="opacity-0"
+                            >
+                                <p className="text-sm text-neutral-600">Invitation sent</p>
+                            </Transition>
                         </div>
-
-                        <div className="mt-5 md:mt-0 md:col-span-2">
-                            <Card>
-                                <CardContent className="p-6">
-                                    <div className="space-y-6">
-                                        {team.users.map(user => (
-                                            <div
-                                                className="flex items-center justify-between"
-                                                key={user.id}
-                                            >
-                                                <div className="flex items-center">
-                                                    <img
-                                                        className="w-8 h-8 rounded-full"
-                                                        src={user.profile_photo_url}
-                                                        alt={user.name}
-                                                    />
-                                                    <div className="ml-4 dark:text-white">
-                                                        {user.name}
-                                                    </div>
-                                                </div>
-
-                                                <div className="flex items-center">
-                                                    {userPermissions.canAddTeamMembers &&
-                                                        availableRoles.length ? (
-                                                        <Button
-                                                            variant="link"
-                                                            className="ml-2 text-sm text-gray-400"
-                                                            onClick={() => manageRole(user)}
-                                                        >
-                                                            {displayableRole(user.membership.role)}
-                                                        </Button>
-                                                    ) : availableRoles.length ? (
-                                                        <div className="ml-2 text-sm text-gray-400">
-                                                            {displayableRole(user.membership.role)}
-                                                        </div>
-                                                    ) : null}
-
-                                                    {page.props.auth.user?.id === user.id ? (
-                                                        <Button
-                                                            variant="link"
-                                                            className="cursor-pointer ml-6 text-sm text-red-500"
-                                                            onClick={confirmLeavingTeam}
-                                                        >
-                                                            Leave
-                                                        </Button>
-                                                    ) : null}
-
-                                                    {userPermissions.canRemoveTeamMembers ? (
-                                                        <Button
-                                                            variant="link"
-                                                            className="cursor-pointer ml-6 text-sm text-red-500"
-                                                            onClick={() => confirmTeamMemberRemoval(user)}
-                                                        >
-                                                            Remove
-                                                        </Button>
-                                                    ) : null}
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        </div>
-                    </div>
+                    </form>
                 </div>
-            ) : null}
+            )}
 
-            {page.props.auth.user && (
-                <div>
-                    <div className="hidden sm:block">
-                        <div className="py-8">
-                            <Separator />
-                        </div>
-                    </div>
+            {/* Pending Invitations Section */}
+            {team.team_invitations.length > 0 && userPermissions.canAddTeamMembers && (
+                <div className="space-y-6">
+                    <HeadingSmall title="Pending invitations" description="These people have been invited to join your team" />
 
-                    <div className="mt-10 sm:mt-0 md:grid md:grid-cols-3 md:gap-6">
-                        <div className="md:col-span-1">
-                            <div className="px-4 sm:px-0">
-                                <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">
-                                    Leave Team
-                                </h3>
-                                <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                                    If you choose to leave, you will no longer have access to any
-                                    of this team's resources.
-                                </p>
+                    <div className="space-y-4">
+                        {team.team_invitations.map(invitation => (
+                            <div
+                                key={invitation.id}
+                                className="flex items-center justify-between py-3 border-b"
+                            >
+                                <div className="flex items-center gap-3">
+                                    <Avatar>
+                                        <AvatarFallback>
+                                            {invitation.email.slice(0, 2).toUpperCase()}
+                                        </AvatarFallback>
+                                    </Avatar>
+                                    <div>
+                                        <p className="font-medium">{invitation.email}</p>
+                                        <p className="text-xs text-muted-foreground">
+                                            Invitation pending
+                                        </p>
+                                    </div>
+                                </div>
+                                {userPermissions.canRemoveTeamMembers && (
+                                    <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        onClick={() => cancelTeamInvitation(invitation)}
+                                    >
+                                        Cancel
+                                    </Button>
+                                )}
                             </div>
-                        </div>
-
-                        <div className="mt-5 md:mt-0 md:col-span-2">
-                            <Card>
-                                <CardContent className="p-6">
-                                    <div className="max-w-xl text-sm text-gray-600 dark:text-gray-400">
-                                        If you choose to leave, you will no longer have access to any of this team's resources.
-                                    </div>
-
-                                    <div className="mt-5">
-                                        <Button variant="destructive" onClick={confirmLeavingTeam}>
-                                            Leave
-                                        </Button>
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        </div>
+                        ))}
                     </div>
                 </div>
             )}
 
-            {/* <!-- Role Management Modal --> */}
+            {/* Team Members Section */}
+            {team.users.length > 0 && (
+                <div className="space-y-6">
+                    <HeadingSmall title="Team members" description="All current members of this team" />
+
+                    <div className="space-y-4">
+                        {team.users.map(user => (
+                            <div
+                                key={user.id}
+                                className="flex items-center justify-between py-3 border-b"
+                            >
+                                <div className="flex items-center gap-3">
+                                    <Avatar>
+                                        <AvatarImage
+                                            src={user.profile_photo_url}
+                                            alt={user.name}
+                                        />
+                                        <AvatarFallback>
+                                            {user.name?.slice(0, 2).toUpperCase()}
+                                        </AvatarFallback>
+                                    </Avatar>
+                                    <div>
+                                        <p className="font-medium">{user.name}</p>
+                                        <p className="text-xs text-muted-foreground">
+                                            {user.email}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-center gap-2">
+                                    {displayableRole(user.membership.role) && (
+                                        <Badge variant={getRoleVariant(user.membership.role)}>
+                                            {displayableRole(user.membership.role)}
+                                        </Badge>
+                                    )}
+
+                                    {userPermissions.canAddTeamMembers && availableRoles.length > 0 && (
+                                        <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            onClick={() => manageRole(user)}
+                                        >
+                                            <Settings className="h-4 w-4" />
+                                        </Button>
+                                    )}
+
+                                    {page.props.auth.user?.id === user.id ? (
+                                        <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            onClick={confirmLeavingTeam}
+                                        >
+                                            <UserMinus className="h-4 w-4" />
+                                        </Button>
+                                    ) : userPermissions.canRemoveTeamMembers ? (
+                                        <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            onClick={() => confirmTeamMemberRemoval(user)}
+                                        >
+                                            <Trash2 className="h-4 w-4" />
+                                        </Button>
+                                    ) : null}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            {/* Leave Team Section */}
+            {page.props.auth.user && (
+                <div className="space-y-6">
+                    <HeadingSmall title="Leave team" description="If you leave this team, you will lose access to all team resources" />
+
+                    <div className="bg-red-50 border border-red-200 rounded-md p-4">
+                        <p className="text-sm text-red-800 mb-4">
+                            Please proceed with caution, this cannot be undone.
+                        </p>
+                        <Button variant="destructive" onClick={confirmLeavingTeam}>
+                            Leave Team
+                        </Button>
+                    </div>
+                </div>
+            )}
+
+            {/* Role Management Dialog */}
             <Dialog
                 open={currentlyManagingRole}
                 onOpenChange={setCurrentlyManagingRole}
@@ -485,91 +367,55 @@ export default function TeamMemberManager({
                     <DialogHeader>
                         <DialogTitle>Manage Role</DialogTitle>
                         <DialogDescription>
-                            Select the new role for this team member.
+                            Select the new role for {managingRoleFor?.name}.
                         </DialogDescription>
                     </DialogHeader>
-                    {managingRoleFor ? (
-                        <div className="relative z-0 mt-1 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer">
-                            {availableRoles.map((role, i) => (
-                                <button
-                                    type="button"
-                                    className={classNames(
-                                        'relative px-4 py-3 inline-flex w-full rounded-lg focus:z-10 focus:outline-none focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-600',
-                                        {
-                                            'border-t border-gray-200 dark:border-gray-700 focus:border-none rounded-t-none':
-                                                i > 0,
-                                            'rounded-b-none':
-                                                i != Object.keys(availableRoles).length - 1,
-                                        },
+                    <div className="space-y-4">
+                        <Select
+                            value={updateRoleForm.data.role || ''}
+                            onValueChange={value => updateRoleForm.setData('role', value)}
+                        >
+                            <SelectTrigger>
+                                <SelectValue placeholder="Select a role">
+                                    {updateRoleForm.data.role && (
+                                        <span className="font-medium">
+                                            {availableRoles.find(r => r.key === updateRoleForm.data.role)?.name}
+                                        </span>
                                     )}
-                                    onClick={() => updateRoleForm.setData('role', role.key)}
-                                    key={role.key}
-                                >
-                                    <div
-                                        className={classNames({
-                                            'opacity-50':
-                                                updateRoleForm.data.role &&
-                                                updateRoleForm.data.role != role.key,
-                                        })}
-                                    >
-                                        {/* <!-- Role Name --> */}
-                                        <div className="flex items-center">
-                                            <div
-                                                className={classNames(
-                                                    'text-sm text-gray-600 dark:text-gray-400',
-                                                    {
-                                                        'font-semibold':
-                                                            updateRoleForm.data.role == role.key,
-                                                    },
-                                                )}
-                                            >
-                                                {role.name}
-                                            </div>
-
-                                            {updateRoleForm.data.role == role.key ? (
-                                                <svg
-                                                    className="ml-2 h-5 w-5 text-green-400"
-                                                    fill="none"
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    strokeWidth="2"
-                                                    stroke="currentColor"
-                                                    viewBox="0 0 24 24"
-                                                >
-                                                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                                </svg>
-                                            ) : null}
+                                </SelectValue>
+                            </SelectTrigger>
+                            <SelectContent>
+                                {availableRoles.map(role => (
+                                    <SelectItem key={role.key} value={role.key}>
+                                        <div className="flex flex-col">
+                                            <span className="font-medium">{role.name}</span>
+                                            <span className="text-xs text-muted-foreground">
+                                                {role.description}
+                                            </span>
                                         </div>
-
-                                        {/* <!-- Role Description --> */}
-                                        <div className="mt-2 text-xs text-gray-600 dark:text-gray-400">
-                                            {role.description}
-                                        </div>
-                                    </div>
-                                </button>
-                            ))}
-                        </div>
-                    ) : null}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
                     <DialogFooter>
                         <Button
-                            variant="secondary"
+                            variant="outline"
                             onClick={() => setCurrentlyManagingRole(false)}
                         >
                             Cancel
                         </Button>
-
                         <Button
-                            className="ml-2"
                             onClick={updateRole}
                             disabled={updateRoleForm.processing}
                         >
-                            Save
+                            Update Role
                         </Button>
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
 
-            {/* <!-- Leave Team Confirmation Modal --> */}
+            {/* Leave Team Confirmation Dialog */}
             <Dialog
                 open={confirmingLeavingTeam}
                 onOpenChange={setConfirmingLeavingTeam}
@@ -578,30 +424,28 @@ export default function TeamMemberManager({
                     <DialogHeader>
                         <DialogTitle>Leave Team</DialogTitle>
                         <DialogDescription>
-                            Are you sure you would like to leave this team?
+                            Are you sure you want to leave this team? You will lose access to all team resources.
                         </DialogDescription>
                     </DialogHeader>
                     <DialogFooter>
                         <Button
-                            variant="secondary"
+                            variant="outline"
                             onClick={() => setConfirmingLeavingTeam(false)}
                         >
                             Cancel
                         </Button>
-
                         <Button
                             variant="destructive"
-                            className="ml-2"
                             onClick={leaveTeam}
                             disabled={leaveTeamForm.processing}
                         >
-                            Leave
+                            Leave Team
                         </Button>
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
 
-            {/* <!-- Remove Team Member Confirmation Modal --> */}
+            {/* Remove Team Member Confirmation Dialog */}
             <Dialog
                 open={!!teamMemberBeingRemoved}
                 onOpenChange={open => !open && setTeamMemberBeingRemoved(null)}
@@ -610,24 +454,22 @@ export default function TeamMemberManager({
                     <DialogHeader>
                         <DialogTitle>Remove Team Member</DialogTitle>
                         <DialogDescription>
-                            Are you sure you would like to remove this person from the team?
+                            Are you sure you want to remove {teamMemberBeingRemoved?.name} from this team?
                         </DialogDescription>
                     </DialogHeader>
                     <DialogFooter>
                         <Button
-                            variant="secondary"
+                            variant="outline"
                             onClick={() => setTeamMemberBeingRemoved(null)}
                         >
                             Cancel
                         </Button>
-
                         <Button
                             variant="destructive"
-                            className="ml-2"
                             onClick={removeTeamMember}
                             disabled={removeTeamMemberForm.processing}
                         >
-                            Remove
+                            Remove Member
                         </Button>
                     </DialogFooter>
                 </DialogContent>

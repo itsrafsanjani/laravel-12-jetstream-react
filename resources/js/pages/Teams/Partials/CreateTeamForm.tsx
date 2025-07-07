@@ -6,97 +6,97 @@ import InputError from '@/Components/ui/InputError';
 import { Input } from '@/Components/ui/input';
 import { Label } from '@/Components/ui/label';
 import { Button } from '@/Components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardFooter,
-} from '@/Components/ui/card';
-import Heading from '@/Components/Heading';
+import { Avatar, AvatarFallback, AvatarImage } from '@/Components/ui/avatar';
+import HeadingSmall from '@/Components/HeadingSmall';
 import { cn } from '@/lib/utils';
+import { Transition } from '@headlessui/react';
 
 export default function CreateTeamForm() {
-  const route = useRoute();
-  const page = useTypedPage();
-  const form = useForm({
-    name: '',
-  });
-
-  function createTeam() {
-    form.post(route('teams.store'), {
-      errorBag: 'createTeam',
-      preserveScroll: true,
+    const route = useRoute();
+    const page = useTypedPage();
+    const form = useForm({
+        name: '',
     });
-  }
 
-  return (
-    <div>
-      <Heading
-        title="Team Details"
-        description="Create a new team to collaborate with others on projects."
-      />
-      <form
-        onSubmit={e => {
-          e.preventDefault();
-          createTeam();
-        }}
-      >
-        <Card>
-          <CardContent className="p-6">
-            <div className="space-y-4">
-              <div>
-                <Label>Team Owner</Label>
+    function createTeam() {
+        form.post(route('teams.store'), {
+            errorBag: 'createTeam',
+            preserveScroll: true,
+        });
+    }
 
-                <div className="flex items-center mt-2">
-                  <img
-                    className="w-12 h-12 rounded-full object-cover"
-                    src={page.props.auth.user?.profile_photo_url}
-                    alt={page.props.auth.user?.name}
-                  />
+    return (
+        <div className="space-y-6">
+            <HeadingSmall title="Team details" description="Create a new team to collaborate with others on projects" />
 
-                  <div className="ml-4 leading-tight">
-                    <div>
-                      {page.props.auth.user?.name}
+            <div className="space-y-6">
+                <div className="grid gap-2">
+                    <Label className="text-sm font-medium">Team Owner</Label>
+                    <div className="flex items-center space-x-3">
+                        <Avatar>
+                            <AvatarImage
+                                src={page.props.auth.user?.profile_photo_url}
+                                alt={page.props.auth.user?.name}
+                            />
+                            <AvatarFallback>
+                                {page.props.auth.user?.name?.slice(0, 2).toUpperCase()}
+                            </AvatarFallback>
+                        </Avatar>
+                        <div>
+                            <p className="text-sm font-medium">
+                                {page.props.auth.user?.name}
+                            </p>
+                            <p className="text-xs text-muted-foreground">
+                                {page.props.auth.user?.email}
+                            </p>
+                        </div>
                     </div>
-                    <div className="text-sm text-muted-foreground">
-                      {page.props.auth.user?.email}
-                    </div>
-                  </div>
                 </div>
-              </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="name">Team Name</Label>
-                <Input
-                  id="name"
-                  type="text"
-                  className="w-full"
-                  value={form.data.name}
-                  onChange={e =>
-                    form.setData('name', e.currentTarget.value)
-                  }
-                  autoFocus
-                />
-                <InputError message={form.errors.name} className="mt-2" />
-              </div>
+                <form
+                    onSubmit={e => {
+                        e.preventDefault();
+                        createTeam();
+                    }}
+                    className="space-y-6"
+                >
+                    <div className="grid gap-2">
+                        <Label htmlFor="name">Team Name</Label>
+                        <Input
+                            id="name"
+                            type="text"
+                            className="mt-1 block w-full"
+                            placeholder="Enter team name"
+                            value={form.data.name}
+                            onChange={e =>
+                                form.setData('name', e.currentTarget.value)
+                            }
+                            autoFocus
+                        />
+                        <InputError className="mt-2" message={form.errors.name} />
+                    </div>
+
+                    <div className="flex items-center gap-4">
+                        <Button
+                            type="submit"
+                            disabled={form.processing}
+                            className={cn({ 'opacity-50': form.processing })}
+                        >
+                            Create Team
+                        </Button>
+
+                        <Transition
+                            show={form.recentlySuccessful}
+                            enter="transition ease-in-out"
+                            enterFrom="opacity-0"
+                            leave="transition ease-in-out"
+                            leaveTo="opacity-0"
+                        >
+                            <p className="text-sm text-neutral-600">Team created successfully</p>
+                        </Transition>
+                    </div>
+                </form>
             </div>
-          </CardContent>
-          <CardFooter>
-            <div className="flex items-center justify-end text-right w-full">
-              {form.recentlySuccessful && (
-                <p className="text-sm text-gray-600 mr-3">
-                  Saved.
-                </p>
-              )}
-              <Button
-                className={cn({ 'opacity-25': form.processing })}
-                disabled={form.processing}
-              >
-                Save
-              </Button>
-            </div>
-          </CardFooter>
-        </Card>
-      </form>
-    </div>
-  );
+        </div>
+    );
 }

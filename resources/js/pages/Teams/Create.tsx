@@ -1,8 +1,9 @@
 import CreateTeamForm from '@/Pages/Teams/Partials/CreateTeamForm';
 import AppLayout from '@/Layouts/AppLayout';
-import { BreadcrumbItem } from '@/types';
 import Heading from '@/Components/Heading';
+import { BreadcrumbItem } from '@/types';
 import useRoute from '@/Hooks/useRoute';
+import TeamsLayout from '@/Layouts/teams/Layout';
 
 export default function Create() {
     const route = useRoute();
@@ -12,19 +13,22 @@ export default function Create() {
             href: route('teams.show', { team: '' }), // The team id will be injected by the layout
         },
         {
-            title: 'Create',
+            title: 'Create Team',
             href: route('teams.create'),
         }
     ];
+
     return (
-        <AppLayout
-            breadcrumbs={breadcrumbs}
-        >
-            <Heading
-                title="Create Team"
-                description="Create a new team to collaborate with others on projects."
-            />
-            <CreateTeamForm />
+        <AppLayout breadcrumbs={breadcrumbs}>
+            <TeamsLayout>
+            <div className="px-4 py-6">
+                <Heading title="Create Team" description="Start collaborating with others by creating a new team" />
+
+                <div className="mt-8 max-w-xl">
+                    <CreateTeamForm />
+                </div>
+            </div>
+            </TeamsLayout>
         </AppLayout>
     );
 }
