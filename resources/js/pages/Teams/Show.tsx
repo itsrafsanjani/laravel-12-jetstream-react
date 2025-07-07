@@ -1,4 +1,4 @@
-import Heading from '@/Components/heading';
+import Heading from '@/Components/Heading';
 import { Separator } from '@/Components/ui/separator';
 import useRoute from '@/Hooks/useRoute';
 import AppLayout from '@/Layouts/AppLayout';

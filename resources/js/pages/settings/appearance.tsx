@@ -5,7 +5,7 @@ import HeadingSmall from '@/Components/HeadingSmall';
 import { type BreadcrumbItem } from '@/types';
 
 import AppLayout from '@/Layouts/AppLayout';
-import SettingsLayout from '@/Layouts/Settings/Layout';
+import SettingsLayout from '@/Layouts/settings/Layout';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
