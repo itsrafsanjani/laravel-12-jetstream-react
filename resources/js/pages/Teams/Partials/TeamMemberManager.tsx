@@ -1,6 +1,5 @@
 import useRoute from '@/Hooks/useRoute';
 import useTypedPage from '@/Hooks/useTypedPage';
-import ActionMessage from '@/Components/ActionMessage';
 import {
     Dialog,
     DialogContent,
@@ -272,12 +271,11 @@ export default function TeamMemberManager({
 
                                     <CardFooter>
                                         <div className="flex items-center justify-end text-right">
-                                            <ActionMessage
-                                                on={addTeamMemberForm.recentlySuccessful}
-                                                className="mr-3"
-                                            >
-                                                Added.
-                                            </ActionMessage>
+                                            {addTeamMemberForm.recentlySuccessful && (
+                                                <div className="mr-3">
+                                                    Added.
+                                                </div>
+                                            )}
 
                                             <Button
                                                 className={classNames({

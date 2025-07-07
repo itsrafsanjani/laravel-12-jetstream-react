@@ -2,7 +2,6 @@ import { useForm } from '@inertiajs/react';
 import classNames from 'classnames';
 import React, { useState } from 'react';
 import useRoute from '@/Hooks/useRoute';
-import ActionMessage from '@/Components/ActionMessage';
 import { Checkbox } from '@/Components/ui/checkbox';
 import {
     Dialog,
@@ -181,12 +180,11 @@ export default function APITokenManager({
                             </CardContent>
                             <CardFooter>
                                 <div className="flex items-center justify-end text-right">
-                                    <ActionMessage
-                                        on={createApiTokenForm.recentlySuccessful}
-                                        className="mr-3"
-                                    >
-                                        Created.
-                                    </ActionMessage>
+                                    {createApiTokenForm.recentlySuccessful && (
+                                        <div className="mr-3">
+                                            Created.
+                                        </div>
+                                    )}
 
                                     <Button
                                         className={classNames({

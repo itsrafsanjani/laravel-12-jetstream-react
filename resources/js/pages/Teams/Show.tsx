@@ -11,8 +11,8 @@ import {
     User,
     BreadcrumbItem,
 } from '@/types';
-import Heading from '@/Components/Heading';
 import useRoute from '@/Hooks/useRoute';
+import Heading from '@/Components/heading';
 
 interface UserMembership extends User {
     membership: {
