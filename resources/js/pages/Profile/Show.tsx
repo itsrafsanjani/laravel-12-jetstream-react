@@ -8,6 +8,7 @@ import useTypedPage from '@/Hooks/useTypedPage';
 import { Separator } from '@/Components/ui/separator';
 import AppLayout from '@/Layouts/AppLayout';
 import { Session, BreadcrumbItem } from '@/types';
+import SettingsLayout from '@/Layouts/settings/SettingsLayout';
 
 interface Props {
   sessions: Session[];
@@ -29,7 +30,7 @@ export default function Show({
 
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
-      <div>
+      <SettingsLayout>
         <div className="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
           {page.props.jetstream.canUpdateProfileInformation ? (
             <div>
@@ -87,7 +88,7 @@ export default function Show({
             </>
           ) : null}
         </div>
-      </div>
+      </SettingsLayout>
     </AppLayout>
   );
 }
