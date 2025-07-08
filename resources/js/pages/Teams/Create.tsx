@@ -4,6 +4,7 @@ import Heading from '@/Components/Heading';
 import { BreadcrumbItem } from '@/types';
 import useRoute from '@/Hooks/useRoute';
 import TeamsLayout from '@/Layouts/teams/Layout';
+import { Head } from '@inertiajs/react';
 
 export default function Create() {
     const route = useRoute();
@@ -20,14 +21,10 @@ export default function Create() {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <TeamsLayout>
-            <div className="px-4 py-6">
-                <Heading title="Create Team" description="Start collaborating with others by creating a new team" />
+            <Head title="Create Team" />
 
-                <div className="mt-8 max-w-xl">
-                    <CreateTeamForm />
-                </div>
-            </div>
+            <TeamsLayout>
+                <CreateTeamForm />
             </TeamsLayout>
         </AppLayout>
     );

@@ -36,35 +36,23 @@ export default function Show({
       <SettingsLayout>
         <div className="space-y-12">
           {page.props.jetstream.canUpdateProfileInformation ? (
-            <>
-              <UpdateProfileInformationForm user={page.props.auth.user!} />
-              <Separator className="hidden sm:block" />
-            </>
+            <UpdateProfileInformationForm user={page.props.auth.user!} />
           ) : null}
 
           {page.props.jetstream.canUpdatePassword ? (
-            <>
-              <UpdatePasswordForm />
-              <Separator className="hidden sm:block" />
-            </>
+            <Separator className="hidden sm:block" />
           ) : null}
 
           {page.props.jetstream.canManageTwoFactorAuthentication ? (
-            <>
-              <TwoFactorAuthenticationForm
+            <TwoFactorAuthenticationForm
                 requiresConfirmation={confirmsTwoFactorAuthentication}
-              />
-              <Separator className="hidden sm:block" />
-            </>
+            />
           ) : null}
 
           <LogoutOtherBrowserSessions sessions={sessions} />
 
           {page.props.jetstream.hasAccountDeletionFeatures ? (
-            <>
-              <Separator className="hidden sm:block" />
-              <DeleteUserForm />
-            </>
+            <DeleteUserForm />
           ) : null}
         </div>
       </SettingsLayout>

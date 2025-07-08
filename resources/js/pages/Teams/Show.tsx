@@ -5,6 +5,7 @@ import DeleteTeamForm from '@/Pages/Teams/Partials/DeleteTeamForm';
 import TeamMemberManager from '@/Pages/Teams/Partials/TeamMemberManager';
 import UpdateTeamNameForm from '@/Pages/Teams/Partials/UpdateTeamNameForm';
 import { BreadcrumbItem, JetstreamTeamPermissions, Role, Team, TeamInvitation, User } from '@/types';
+import { Head } from '@inertiajs/react';
 
 interface UserMembership extends User {
     membership: {
@@ -37,7 +38,9 @@ export default function Show({ team, availableRoles, permissions }: Props) {
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
-            <TeamsLayout teamId={team.id.toString()} teamName={team.name}>
+            <Head title="Team Settings" />
+
+            <TeamsLayout>
                 <UpdateTeamNameForm team={team} permissions={permissions} />
 
                 <TeamMemberManager

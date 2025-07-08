@@ -1,119 +1,88 @@
 import { useForm } from '@inertiajs/react';
-import React, { useRef, useState } from 'react';
-import useRoute from '@/Hooks/useRoute';
-import { Button } from '@/Components/ui/button';
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from '@/Components/ui/dialog';
-import { Input } from '@/Components/ui/input';
+import { FormEventHandler, useRef } from 'react';
+
 import InputError from '@/Components/ui/InputError';
+import { Button } from '@/Components/ui/button';
+import { Input } from '@/Components/ui/input';
+import { Label } from '@/Components/ui/label';
+
 import HeadingSmall from '@/Components/HeadingSmall';
-import { cn } from '@/lib/utils';
+
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger } from '@/Components/ui/dialog';
 
 export default function DeleteUserForm() {
-    const route = useRoute();
-    const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
-    const form = useForm({
-        password: '',
-    });
-    const passwordRef = useRef<HTMLInputElement>(null);
+    const passwordInput = useRef<HTMLInputElement>(null);
+    const { data, setData, delete: destroy, processing, reset, errors, clearErrors } = useForm<Required<{ password: string }>>({ password: '' });
 
-    function confirmUserDeletion() {
-        setConfirmingUserDeletion(true);
+    const deleteUser: FormEventHandler = (e) => {
+        e.preventDefault();
 
-        setTimeout(() => passwordRef.current?.focus(), 250);
-    }
-
-    function deleteUser() {
-        form.delete(route('current-user.destroy'), {
+        destroy(route('profile.destroy'), {
             preserveScroll: true,
             onSuccess: () => closeModal(),
-            onError: () => passwordRef.current?.focus(),
-            onFinish: () => form.reset(),
+            onError: () => passwordInput.current?.focus(),
+            onFinish: () => reset(),
         });
-    }
+    };
 
-    function closeModal() {
-        setConfirmingUserDeletion(false);
-        form.reset();
-    }
+    const closeModal = () => {
+        clearErrors();
+        reset();
+    };
 
     return (
         <div className="space-y-6">
-            <HeadingSmall
-                title="Delete Account"
-                description="Permanently delete your account."
-            />
-            <div className="space-y-6">
-                <div className="max-w-xl text-sm text-gray-600 dark:text-gray-400">
-                    Once your account is deleted, all of its resources and data will
-                    be permanently deleted. Before deleting your account, please
-                    download any data or information that you wish to retain.
+            <HeadingSmall title="Delete account" description="Delete your account and all of its resources" />
+            <div className="space-y-4 rounded-lg border border-red-100 bg-red-50 p-4 dark:border-red-200/10 dark:bg-red-700/10">
+                <div className="relative space-y-0.5 text-red-600 dark:text-red-100">
+                    <p className="font-medium">Warning</p>
+                    <p className="text-sm">Please proceed with caution, this cannot be undone.</p>
                 </div>
 
-                <div>
-                    <Dialog
-                        open={confirmingUserDeletion}
-                        onOpenChange={setConfirmingUserDeletion}
-                    >
-                        <DialogTrigger asChild>
-                            <Button variant="destructive" onClick={confirmUserDeletion}>
-                                Delete Account
-                            </Button>
-                        </DialogTrigger>
-                        <DialogContent>
-                            <DialogHeader>
-                                <DialogTitle>Delete Account</DialogTitle>
-                                <DialogDescription>
-                                    Are you sure you want to delete your account? Once your
-                                    account is deleted, all of its resources and data will be
-                                    permanently deleted. Please enter your password to
-                                    confirm you would like to permanently delete your
-                                    account.
-                                </DialogDescription>
-                            </DialogHeader>
-                            <div className="mt-4">
+                <Dialog>
+                    <DialogTrigger asChild>
+                        <Button variant="destructive">Delete account</Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                        <DialogTitle>Are you sure you want to delete your account?</DialogTitle>
+                        <DialogDescription>
+                            Once your account is deleted, all of its resources and data will also be permanently deleted. Please enter your password
+                            to confirm you would like to permanently delete your account.
+                        </DialogDescription>
+                        <form className="space-y-6" onSubmit={deleteUser}>
+                            <div className="grid gap-2">
+                                <Label htmlFor="password" className="sr-only">
+                                    Password
+                                </Label>
+
                                 <Input
-                                    ref={passwordRef}
+                                    id="password"
                                     type="password"
-                                    className="mt-1 block w-3/4"
+                                    name="password"
+                                    ref={passwordInput}
+                                    value={data.password}
+                                    onChange={(e) => setData('password', e.target.value)}
                                     placeholder="Password"
-                                    value={form.data.password}
-                                    onChange={e =>
-                                        form.setData('password', e.currentTarget.value)
-                                    }
+                                    autoComplete="current-password"
                                 />
 
-                                <InputError
-                                    message={form.errors.password}
-                                    className="mt-2"
-                                />
+                                <InputError message={errors.password} />
                             </div>
-                            <DialogFooter>
-                                <Button variant="secondary" onClick={closeModal}>
-                                    Cancel
-                                </Button>
 
-                                <Button
-                                    variant="destructive"
-                                    onClick={deleteUser}
-                                    className={cn('ml-2', {
-                                        'opacity-25': form.processing,
-                                    })}
-                                    disabled={form.processing}
-                                >
-                                    Delete Account
+                            <DialogFooter className="gap-2">
+                                <DialogClose asChild>
+                                    <Button variant="secondary" onClick={closeModal}>
+                                        Cancel
+                                    </Button>
+                                </DialogClose>
+
+                                <Button variant="destructive" disabled={processing} asChild>
+                                    <button type="submit">Delete account</button>
                                 </Button>
                             </DialogFooter>
-                        </DialogContent>
-                    </Dialog>
-                </div>
+                        </form>
+                    </DialogContent>
+                </Dialog>
             </div>
         </div>
     );

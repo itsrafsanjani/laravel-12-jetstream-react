@@ -27,7 +27,7 @@ export default function CreateTeamForm() {
 
     return (
         <div className="space-y-6">
-            <HeadingSmall title="Team details" description="Create a new team to collaborate with others on projects" />
+            <HeadingSmall title="New team" description="Create a new team to collaborate with others on projects" />
 
             <div className="space-y-6">
                 <div className="grid gap-2">
