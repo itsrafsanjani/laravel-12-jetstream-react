@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 use Laravel\Jetstream\Http\Controllers\CurrentTeamController;
 use Laravel\Jetstream\Http\Controllers\Inertia\ApiTokenController;
 use Laravel\Jetstream\Http\Controllers\Inertia\CurrentUserController;
@@ -43,6 +44,11 @@ Route::group(['middleware' => config('jetstream.middleware', ['web'])], function
             Route::delete('/user', [CurrentUserController::class, 'destroy'])
                 ->name('current-user.destroy');
         }
+
+        // Added
+        Route::get('user/appearance', function () {
+            return Inertia::render('Profile/Appearance');
+        })->name('appearance');
 
         Route::group(['middleware' => 'verified'], function () {
             // API...

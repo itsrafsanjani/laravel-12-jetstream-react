@@ -5,8 +5,8 @@ import InputError from '@/Components/ui/InputError';
 import { Input } from '@/Components/ui/input';
 import { Label } from '@/Components/ui/label';
 import { Button } from '@/Components/ui/button';
-import { Card, CardContent, CardFooter } from '@/Components/ui/card';
-import Heading from '@/Components/Heading';
+import HeadingSmall from '@/Components/HeadingSmall';
+import { Transition } from '@headlessui/react';
 import { cn } from '@/lib/utils';
 
 export default function UpdatePasswordForm() {
@@ -39,8 +39,8 @@ export default function UpdatePasswordForm() {
   }
 
   return (
-    <div>
-      <Heading
+    <div className="space-y-6">
+      <HeadingSmall
         title="Update Password"
         description="Ensure your account is using a long, random password to stay secure."
       />
@@ -49,91 +49,83 @@ export default function UpdatePasswordForm() {
           e.preventDefault();
           updatePassword();
         }}
+        className="space-y-6"
       >
-        <Card>
-          <CardContent className="p-6">
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="current_password">Current Password</Label>
-                <Input
-                  id="current_password"
-                  type="password"
-                  className="w-full"
-                  ref={currentPasswordRef}
-                  value={form.data.current_password}
-                  onChange={e =>
-                    form.setData('current_password', e.currentTarget.value)
-                  }
-                  autoComplete="current-password"
-                />
-                <InputError
-                  message={form.errors.current_password}
-                  className="mt-2"
-                />
-              </div>
+        <div className="grid gap-2">
+          <Label htmlFor="current_password">Current Password</Label>
+          <Input
+            id="current_password"
+            type="password"
+            className="mt-1 block w-full"
+            ref={currentPasswordRef}
+            value={form.data.current_password}
+            onChange={e =>
+              form.setData('current_password', e.currentTarget.value)
+            }
+            autoComplete="current-password"
+            placeholder="Current password"
+          />
+          <InputError message={form.errors.current_password} />
+        </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="password">New Password</Label>
-                <Input
-                  id="password"
-                  type="password"
-                  className="w-full"
-                  value={form.data.password}
-                  onChange={e =>
-                    form.setData('password', e.currentTarget.value)
-                  }
-                  autoComplete="new-password"
-                  ref={passwordRef}
-                />
-                <InputError
-                  message={form.errors.password}
-                  className="mt-2"
-                />
-              </div>
+        <div className="grid gap-2">
+          <Label htmlFor="password">New Password</Label>
+          <Input
+            id="password"
+            type="password"
+            className="mt-1 block w-full"
+            value={form.data.password}
+            onChange={e =>
+              form.setData('password', e.currentTarget.value)
+            }
+            autoComplete="new-password"
+            ref={passwordRef}
+            placeholder="New password"
+          />
+          <InputError message={form.errors.password} />
+        </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="password_confirmation">
-                  Confirm Password
-                </Label>
-                <Input
-                  id="password_confirmation"
-                  type="password"
-                  className="w-full"
-                  value={form.data.password_confirmation}
-                  onChange={e =>
-                    form.setData(
-                      'password_confirmation',
-                      e.currentTarget.value,
-                    )
-                  }
-                  autoComplete="new-password"
-                />
-                <InputError
-                  message={form.errors.password_confirmation}
-                  className="mt-2"
-                />
-              </div>
-            </div>
-          </CardContent>
-          <CardFooter>
-            <div className="flex items-center justify-end text-right w-full">
-              {form.recentlySuccessful && (
-                <p className="text-sm text-gray-600 mr-3">
-                  Saved.
-                </p>
-              )}
+        <div className="grid gap-2">
+          <Label htmlFor="password_confirmation">
+            Confirm Password
+          </Label>
+          <Input
+            id="password_confirmation"
+            type="password"
+            className="mt-1 block w-full"
+            value={form.data.password_confirmation}
+            onChange={e =>
+              form.setData(
+                'password_confirmation',
+                e.currentTarget.value,
+              )
+            }
+            autoComplete="new-password"
+            placeholder="Confirm password"
+          />
+          <InputError message={form.errors.password_confirmation} />
+        </div>
 
-              <Button
-                className={cn({
-                  'opacity-25': form.processing,
-                })}
-                disabled={form.processing}
-              >
-                Save
-              </Button>
-            </div>
-          </CardFooter>
-        </Card>
+        <div className="flex items-center gap-4">
+          <Button
+            className={cn({
+              'opacity-25': form.processing,
+            })}
+            disabled={form.processing}
+          >
+            Save Password
+          </Button>
+
+          <Transition
+            show={form.recentlySuccessful}
+            enter="transition ease-in-out"
+            enterFrom="opacity-0"
+            leave="transition ease-in-out"
+            leaveTo="opacity-0"
+          >
+            <p className="text-sm text-neutral-600">Saved</p>
+          </Transition>
+        </div>
       </form>
     </div>
   );

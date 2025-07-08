@@ -5,14 +5,10 @@ import InputError from '@/Components/ui/InputError';
 import { Input } from '@/Components/ui/input';
 import { Label } from '@/Components/ui/label';
 import { Button } from '@/Components/ui/button';
-import {
-    Card,
-    CardContent,
-    CardFooter,
-} from '@/Components/ui/card';
 import { User } from '@/types';
 import useTypedPage from '@/Hooks/useTypedPage';
-import Heading from '@/Components/Heading';
+import HeadingSmall from '@/Components/HeadingSmall';
+import { Transition } from '@headlessui/react';
 import { cn } from '@/lib/utils';
 
 interface Props {
@@ -80,8 +76,8 @@ export default function UpdateProfileInformationForm({ user }: Props) {
     }
 
     return (
-        <div>
-            <Heading
+        <div className="space-y-6">
+            <HeadingSmall
                 title="Profile Information"
                 description="Update your account's profile information and email address."
             />
@@ -90,144 +86,145 @@ export default function UpdateProfileInformationForm({ user }: Props) {
                     e.preventDefault();
                     updateProfileInformation();
                 }}
+                className="space-y-6"
             >
-                <Card>
-                    <CardContent className="p-6">
-                        <div className="space-y-4">
-                            {/* <!-- Profile Photo --> */}
-                            {page.props.jetstream.managesProfilePhotos ? (
-                                <div className="space-y-2">
-                                    {/* <!-- Profile Photo File Input --> */}
-                                    <input
-                                        type="file"
-                                        className="hidden"
-                                        ref={photoRef}
-                                        onChange={updatePhotoPreview}
-                                    />
+                {/* <!-- Profile Photo --> */}
+                {page.props.jetstream.managesProfilePhotos ? (
+                    <div className="grid gap-2">
+                        {/* <!-- Profile Photo File Input --> */}
+                        <input
+                            type="file"
+                            className="hidden"
+                            ref={photoRef}
+                            onChange={updatePhotoPreview}
+                        />
 
-                                    <Label htmlFor="photo">Photo</Label>
+                        <Label htmlFor="photo">Photo</Label>
 
-                                    {photoPreview ? (
-                                        // <!-- New Profile Photo Preview -->
-                                        <div className="mt-2">
-                                            <span
-                                                className="block rounded-full w-20 h-20"
-                                                style={{
-                                                    backgroundSize: 'cover',
-                                                    backgroundRepeat: 'no-repeat',
-                                                    backgroundPosition: 'center center',
-                                                    backgroundImage: `url('${photoPreview}')`,
-                                                }}
-                                            ></span>
-                                        </div>
-                                    ) : (
-                                        // <!-- Current Profile Photo -->
-                                        <div className="mt-2">
-                                            <img
-                                                src={user.profile_photo_url}
-                                                alt={user.name}
-                                                className="rounded-full h-20 w-20 object-cover"
-                                            />
-                                        </div>
-                                    )}
-
-                                    <div className="flex items-center gap-2">
-                                        <Button
-                                            variant="secondary"
-                                            type="button"
-                                            onClick={selectNewPhoto}
-                                        >
-                                            Select A New Photo
-                                        </Button>
-
-                                        {user.profile_photo_path ? (
-                                            <Button
-                                                variant="secondary"
-                                                type="button"
-                                                onClick={deletePhoto}
-                                            >
-                                                Remove Photo
-                                            </Button>
-                                        ) : null}
-                                    </div>
-
-                                    <InputError message={form.errors.photo} className="mt-2" />
-                                </div>
-                            ) : null}
-
-                            {/* <!-- Name --> */}
-                            <div className="space-y-2">
-                                <Label htmlFor="name">Name</Label>
-                                <Input
-                                    id="name"
-                                    type="text"
-                                    className="w-full"
-                                    value={form.data.name}
-                                    onChange={e => form.setData('name', e.currentTarget.value)}
-                                    autoComplete="name"
-                                />
-                                <InputError message={form.errors.name} className="mt-2" />
+                        {photoPreview ? (
+                            // <!-- New Profile Photo Preview -->
+                            <div className="mt-1">
+                                <span
+                                    className="block rounded-full w-20 h-20"
+                                    style={{
+                                        backgroundSize: 'cover',
+                                        backgroundRepeat: 'no-repeat',
+                                        backgroundPosition: 'center center',
+                                        backgroundImage: `url('${photoPreview}')`,
+                                    }}
+                                ></span>
                             </div>
-
-                            {/* <!-- Email --> */}
-                            <div className="space-y-2">
-                                <Label htmlFor="email">Email</Label>
-                                <Input
-                                    id="email"
-                                    type="email"
-                                    className="w-full"
-                                    value={form.data.email}
-                                    onChange={e => form.setData('email', e.currentTarget.value)}
+                        ) : (
+                            // <!-- Current Profile Photo -->
+                            <div className="mt-1">
+                                <img
+                                    src={user.profile_photo_url}
+                                    alt={user.name}
+                                    className="rounded-full h-20 w-20 object-cover"
                                 />
-                                <InputError message={form.errors.email} className="mt-2" />
-
-                                {page.props.jetstream.hasEmailVerification &&
-                                    user.email_verified_at === null ? (
-                                    <div>
-                                        <p className="text-sm mt-2">
-                                            Your email address is unverified.
-                                            <Link
-                                                href={route('verification.send')}
-                                                method="post"
-                                                as="button"
-                                                className="underline"
-                                                onClick={e => {
-                                                    e.preventDefault();
-                                                    setVerificationLinkSent(true);
-                                                }}
-                                            >
-                                                Click here to re-send the verification email.
-                                            </Link>
-                                        </p>
-                                        {verificationLinkSent && (
-                                            <div className="mt-2 font-medium text-sm text-green-600">
-                                                A new verification link has been sent to your email address.
-                                            </div>
-                                        )}
-                                    </div>
-                                ) : null}
                             </div>
-                        </div>
-                    </CardContent>
-                    <CardFooter>
-                        <div className="flex items-center justify-end text-right w-full">
-                            {form.recentlySuccessful && (
-                                <p className="text-sm text-gray-600 mr-3">
-                                    Saved.
-                                </p>
-                            )}
+                        )}
 
+                        <div className="flex items-center gap-2 mt-2">
                             <Button
-                                className={cn({
-                                    'opacity-25': form.processing,
-                                })}
-                                disabled={form.processing}
+                                variant="secondary"
+                                type="button"
+                                onClick={selectNewPhoto}
                             >
-                                Save
+                                Select A New Photo
                             </Button>
+
+                            {user.profile_photo_path ? (
+                                <Button
+                                    variant="secondary"
+                                    type="button"
+                                    onClick={deletePhoto}
+                                >
+                                    Remove Photo
+                                </Button>
+                            ) : null}
                         </div>
-                    </CardFooter>
-                </Card>
+
+                        <InputError message={form.errors.photo} />
+                    </div>
+                ) : null}
+
+                {/* <!-- Name --> */}
+                <div className="grid gap-2">
+                    <Label htmlFor="name">Name</Label>
+                    <Input
+                        id="name"
+                        type="text"
+                        className="mt-1 block w-full"
+                        value={form.data.name}
+                        onChange={e => form.setData('name', e.currentTarget.value)}
+                        autoComplete="name"
+                        placeholder="Full name"
+                    />
+                    <InputError message={form.errors.name} />
+                </div>
+
+                {/* <!-- Email --> */}
+                <div className="grid gap-2">
+                    <Label htmlFor="email">Email</Label>
+                    <Input
+                        id="email"
+                        type="email"
+                        className="mt-1 block w-full"
+                        value={form.data.email}
+                        onChange={e => form.setData('email', e.currentTarget.value)}
+                        autoComplete="username"
+                        placeholder="Email address"
+                    />
+                    <InputError message={form.errors.email} />
+
+                    {page.props.jetstream.hasEmailVerification &&
+                        user.email_verified_at === null ? (
+                        <div>
+                            <p className="text-sm text-muted-foreground">
+                                Your email address is unverified.{' '}
+                                <Link
+                                    href={route('verification.send')}
+                                    method="post"
+                                    as="button"
+                                    className="text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current! dark:decoration-neutral-500"
+                                    onClick={e => {
+                                        e.preventDefault();
+                                        setVerificationLinkSent(true);
+                                    }}
+                                >
+                                    Click here to re-send the verification email.
+                                </Link>
+                            </p>
+                            {verificationLinkSent && (
+                                <div className="mt-2 text-sm font-medium text-green-600">
+                                    A new verification link has been sent to your email address.
+                                </div>
+                            )}
+                        </div>
+                    ) : null}
+                </div>
+
+                <div className="flex items-center gap-4">
+                    <Button
+                        className={cn({
+                            'opacity-25': form.processing,
+                        })}
+                        disabled={form.processing}
+                    >
+                        Save
+                    </Button>
+
+                    <Transition
+                        show={form.recentlySuccessful}
+                        enter="transition ease-in-out"
+                        enterFrom="opacity-0"
+                        leave="transition ease-in-out"
+                        leaveTo="opacity-0"
+                    >
+                        <p className="text-sm text-neutral-600">Saved</p>
+                    </Transition>
+                </div>
             </form>
         </div>
     );

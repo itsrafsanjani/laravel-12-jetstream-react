@@ -29,6 +29,8 @@ class JetstreamServiceProvider extends ServiceProvider
     {
         $this->configurePermissions();
 
+        $this->loadRoutesFrom(base_path('routes/jetstream.php'));
+
         Jetstream::createTeamsUsing(CreateTeam::class);
         Jetstream::updateTeamNamesUsing(UpdateTeamName::class);
         Jetstream::addTeamMembersUsing(AddTeamMember::class);

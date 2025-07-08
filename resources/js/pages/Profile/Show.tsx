@@ -9,6 +9,7 @@ import { Separator } from '@/Components/ui/separator';
 import AppLayout from '@/Layouts/AppLayout';
 import { Session, BreadcrumbItem } from '@/types';
 import SettingsLayout from '@/Layouts/settings/SettingsLayout';
+import { Head } from '@inertiajs/react';
 
 interface Props {
   sessions: Session[];
@@ -30,61 +31,39 @@ export default function Show({
 
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
-      <SettingsLayout>
-        <div className="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-          {page.props.jetstream.canUpdateProfileInformation ? (
-            <div>
-              <UpdateProfileInformationForm user={page.props.auth.user!} />
+      <Head title="Profile settings" />
 
-              <div className="hidden sm:block">
-                <div className="py-8">
-                  <Separator />
-                </div>
-              </div>
-            </div>
+      <SettingsLayout>
+        <div className="space-y-12">
+          {page.props.jetstream.canUpdateProfileInformation ? (
+            <>
+              <UpdateProfileInformationForm user={page.props.auth.user!} />
+              <Separator className="hidden sm:block" />
+            </>
           ) : null}
 
           {page.props.jetstream.canUpdatePassword ? (
-            <div className="mt-10 sm:mt-0">
+            <>
               <UpdatePasswordForm />
-
-              <div className="hidden sm:block">
-                <div className="py-8">
-                  <Separator />
-                </div>
-              </div>
-            </div>
+              <Separator className="hidden sm:block" />
+            </>
           ) : null}
 
           {page.props.jetstream.canManageTwoFactorAuthentication ? (
-            <div className="mt-10 sm:mt-0">
+            <>
               <TwoFactorAuthenticationForm
                 requiresConfirmation={confirmsTwoFactorAuthentication}
               />
-
-              <div className="hidden sm:block">
-                <div className="py-8">
-                  <Separator />
-                </div>
-              </div>
-            </div>
+              <Separator className="hidden sm:block" />
+            </>
           ) : null}
 
-          <div className="mt-10 sm:mt-0">
-            <LogoutOtherBrowserSessions sessions={sessions} />
-          </div>
+          <LogoutOtherBrowserSessions sessions={sessions} />
 
           {page.props.jetstream.hasAccountDeletionFeatures ? (
             <>
-              <div className="hidden sm:block">
-                <div className="py-8">
-                  <Separator />
-                </div>
-              </div>
-
-              <div className="mt-10 sm:mt-0">
-                <DeleteUserForm />
-              </div>
+              <Separator className="hidden sm:block" />
+              <DeleteUserForm />
             </>
           ) : null}
         </div>
