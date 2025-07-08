@@ -347,8 +347,8 @@ export default function TeamMemberManager({
                 <div className="space-y-6">
                     <HeadingSmall title="Leave team" description="If you leave this team, you will lose access to all team resources" />
 
-                    <div className="bg-red-50 border border-red-200 rounded-md p-4">
-                        <p className="text-sm text-red-800 mb-4">
+                    <div className="space-y-4 rounded-lg border border-red-100 bg-red-50 p-4 dark:border-red-200/10 dark:bg-red-700/10">
+                        <p className="text-sm text-red-600 dark:text-red-100 mb-4">
                             Please proceed with caution, this cannot be undone.
                         </p>
                         <Button variant="destructive" onClick={confirmLeavingTeam}>

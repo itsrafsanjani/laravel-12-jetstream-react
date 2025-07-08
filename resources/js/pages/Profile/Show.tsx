@@ -2,7 +2,6 @@ import React from 'react';
 import DeleteUserForm from '@/Pages/Profile/Partials/DeleteUserForm';
 import LogoutOtherBrowserSessions from '@/Pages/Profile/Partials/LogoutOtherBrowserSessionsForm';
 import TwoFactorAuthenticationForm from '@/Pages/Profile/Partials/TwoFactorAuthenticationForm';
-import UpdatePasswordForm from '@/Pages/Profile/Partials/UpdatePasswordForm';
 import UpdateProfileInformationForm from '@/Pages/Profile/Partials/UpdateProfileInformationForm';
 import useTypedPage from '@/Hooks/useTypedPage';
 import { Separator } from '@/Components/ui/separator';
