@@ -1,15 +1,14 @@
-import { useForm } from '@inertiajs/react';
-import React from 'react';
-import useRoute from '@/Hooks/useRoute';
-import useTypedPage from '@/Hooks/useTypedPage';
+import HeadingSmall from '@/Components/HeadingSmall';
 import InputError from '@/Components/ui/InputError';
+import { Avatar, AvatarFallback, AvatarImage } from '@/Components/ui/avatar';
+import { Button } from '@/Components/ui/button';
 import { Input } from '@/Components/ui/input';
 import { Label } from '@/Components/ui/label';
-import { Button } from '@/Components/ui/button';
-import { Avatar, AvatarFallback, AvatarImage } from '@/Components/ui/avatar';
-import HeadingSmall from '@/Components/HeadingSmall';
+import useRoute from '@/Hooks/useRoute';
+import useTypedPage from '@/Hooks/useTypedPage';
 import { cn } from '@/lib/utils';
 import { Transition } from '@headlessui/react';
+import { useForm } from '@inertiajs/react';
 
 export default function CreateTeamForm() {
     const route = useRoute();
@@ -34,27 +33,18 @@ export default function CreateTeamForm() {
                     <Label className="text-sm font-medium">Team Owner</Label>
                     <div className="flex items-center space-x-3">
                         <Avatar>
-                            <AvatarImage
-                                src={page.props.auth.user?.profile_photo_url}
-                                alt={page.props.auth.user?.name}
-                            />
-                            <AvatarFallback>
-                                {page.props.auth.user?.name?.slice(0, 2).toUpperCase()}
-                            </AvatarFallback>
+                            <AvatarImage src={page.props.auth.user?.profile_photo_url} alt={page.props.auth.user?.name} />
+                            <AvatarFallback>{page.props.auth.user?.name?.slice(0, 2).toUpperCase()}</AvatarFallback>
                         </Avatar>
                         <div>
-                            <p className="text-sm font-medium">
-                                {page.props.auth.user?.name}
-                            </p>
-                            <p className="text-xs text-muted-foreground">
-                                {page.props.auth.user?.email}
-                            </p>
+                            <p className="text-sm font-medium">{page.props.auth.user?.name}</p>
+                            <p className="text-xs text-muted-foreground">{page.props.auth.user?.email}</p>
                         </div>
                     </div>
                 </div>
 
                 <form
-                    onSubmit={e => {
+                    onSubmit={(e) => {
                         e.preventDefault();
                         createTeam();
                     }}
@@ -68,20 +58,14 @@ export default function CreateTeamForm() {
                             className="mt-1 block w-full"
                             placeholder="Enter team name"
                             value={form.data.name}
-                            onChange={e =>
-                                form.setData('name', e.currentTarget.value)
-                            }
+                            onChange={(e) => form.setData('name', e.currentTarget.value)}
                             autoFocus
                         />
                         <InputError className="mt-2" message={form.errors.name} />
                     </div>
 
                     <div className="flex items-center gap-4">
-                        <Button
-                            type="submit"
-                            disabled={form.processing}
-                            className={cn({ 'opacity-50': form.processing })}
-                        >
+                        <Button type="submit" disabled={form.processing} className={cn({ 'opacity-50': form.processing })}>
                             Create Team
                         </Button>
 

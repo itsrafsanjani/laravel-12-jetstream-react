@@ -17,7 +17,6 @@ export default function TeamsLayout({ children }: PropsWithChildren) {
 
     const currentPath = window.location.pathname;
 
-
     const sidebarNavItems: NavItem[] = [
         {
             title: 'Team Settings',

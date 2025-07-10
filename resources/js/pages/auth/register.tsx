@@ -2,10 +2,10 @@ import { Head, useForm } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
 import { FormEventHandler } from 'react';
 
-import InputError from '@/Components/ui/InputError';
 import TextLink from '@/Components/TextLink';
 import { Button } from '@/Components/ui/button';
 import { Input } from '@/Components/ui/input';
+import InputError from '@/Components/ui/InputError';
 import { Label } from '@/Components/ui/label';
 import AuthLayout from '@/Layouts/AuthLayout';
 

@@ -3,8 +3,8 @@ import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from '@/C
 import { UserInfo } from '@/Components/UserInfo';
 import { UserMenuContent } from '@/Components/UserMenuContent';
 import { useIsMobile } from '@/Hooks/use-mobile';
-import { ChevronsUpDown } from 'lucide-react';
 import useTypedPage from '@/Hooks/useTypedPage';
+import { ChevronsUpDown } from 'lucide-react';
 
 export function NavUser() {
     const { auth } = useTypedPage().props;

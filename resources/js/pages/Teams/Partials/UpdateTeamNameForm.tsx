@@ -1,14 +1,14 @@
+import HeadingSmall from '@/Components/HeadingSmall';
 import InputError from '@/Components/ui/InputError';
-import { Button } from '@/Components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/Components/ui/avatar';
+import { Button } from '@/Components/ui/button';
 import { Input } from '@/Components/ui/input';
 import { Label } from '@/Components/ui/label';
-import HeadingSmall from '@/Components/HeadingSmall';
 import useRoute from '@/Hooks/useRoute';
-import { JetstreamTeamPermissions, Team, User } from '@/types';
-import { useForm } from '@inertiajs/react';
 import { cn } from '@/lib/utils';
+import { JetstreamTeamPermissions, Team, User } from '@/types';
 import { Transition } from '@headlessui/react';
+import { useForm } from '@inertiajs/react';
 
 interface Props {
     team: Team & { owner: User };
@@ -37,27 +37,18 @@ export default function UpdateTeamNameForm({ team, permissions }: Props) {
                     <Label className="text-sm font-medium">Team Owner</Label>
                     <div className="flex items-center space-x-3">
                         <Avatar>
-                            <AvatarImage
-                                src={team.owner.profile_photo_url}
-                                alt={team.owner.name}
-                            />
-                            <AvatarFallback>
-                                {team.owner.name?.slice(0, 2).toUpperCase()}
-                            </AvatarFallback>
+                            <AvatarImage src={team.owner.profile_photo_url} alt={team.owner.name} />
+                            <AvatarFallback>{team.owner.name?.slice(0, 2).toUpperCase()}</AvatarFallback>
                         </Avatar>
                         <div>
-                            <p className="text-sm font-medium">
-                                {team.owner.name}
-                            </p>
-                            <p className="text-xs text-muted-foreground">
-                                {team.owner.email}
-                            </p>
+                            <p className="text-sm font-medium">{team.owner.name}</p>
+                            <p className="text-xs text-muted-foreground">{team.owner.email}</p>
                         </div>
                     </div>
                 </div>
 
                 <form
-                    onSubmit={e => {
+                    onSubmit={(e) => {
                         e.preventDefault();
                         updateTeamName();
                     }}
@@ -69,9 +60,7 @@ export default function UpdateTeamNameForm({ team, permissions }: Props) {
                             id="name"
                             className="mt-1 block w-full"
                             value={form.data.name}
-                            onChange={e =>
-                                form.setData('name', e.target.value)
-                            }
+                            onChange={(e) => form.setData('name', e.target.value)}
                             required
                             autoComplete="name"
                             placeholder="Enter team name"

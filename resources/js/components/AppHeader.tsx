@@ -12,9 +12,9 @@ import { cn } from '@/lib/utils';
 import { type BreadcrumbItem, type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 import { BookOpen, Folder, LayoutGrid, Menu, Search } from 'lucide-react';
+import { route } from 'ziggy-js';
 import AppLogo from './AppLogo';
 import AppLogoIcon from './AppLogoIcon';
-import { route } from 'ziggy-js';
 
 const mainNavItems: NavItem[] = [
     {

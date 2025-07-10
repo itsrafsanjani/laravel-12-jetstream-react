@@ -1,20 +1,12 @@
-import useRoute from '@/Hooks/useRoute';
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from '@/Components/ui/dialog';
-import { Button } from '@/Components/ui/button';
 import HeadingSmall from '@/Components/HeadingSmall';
+import { Button } from '@/Components/ui/button';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/Components/ui/dialog';
+import useRoute from '@/Hooks/useRoute';
+import { cn } from '@/lib/utils';
 import { Team } from '@/types';
 import { useForm } from '@inertiajs/react';
-import React, { useState } from 'react';
-import { cn } from '@/lib/utils';
 import { AlertTriangle } from 'lucide-react';
+import { useState } from 'react';
 
 interface Props {
     team: Team;
@@ -35,23 +27,16 @@ export default function DeleteTeamForm({ team }: Props) {
         <div className="space-y-6">
             <HeadingSmall title="Delete team" description="Permanently delete this team and all associated data" />
 
-            <div className="bg-red-50 border border-red-200 rounded-md p-4">
-                <p className="text-sm text-red-800 mb-4">
-                    Once a team is deleted, all of its resources and data will be permanently deleted.
-                    Before deleting this team, please download any data or information regarding this team that you wish to retain.
+            <div className="rounded-md border border-red-200 bg-red-50 p-4">
+                <p className="mb-4 text-sm text-red-800">
+                    Once a team is deleted, all of its resources and data will be permanently deleted. Before deleting this team, please download any
+                    data or information regarding this team that you wish to retain.
                 </p>
-                <p className="text-sm text-red-800 mb-4">
-                    Please proceed with caution, this cannot be undone.
-                </p>
+                <p className="mb-4 text-sm text-red-800">Please proceed with caution, this cannot be undone.</p>
 
-                <Dialog
-                    open={confirmingTeamDeletion}
-                    onOpenChange={setConfirmingTeamDeletion}
-                >
+                <Dialog open={confirmingTeamDeletion} onOpenChange={setConfirmingTeamDeletion}>
                     <DialogTrigger asChild>
-                        <Button variant="destructive">
-                            Delete Team
-                        </Button>
+                        <Button variant="destructive">Delete Team</Button>
                     </DialogTrigger>
                     <DialogContent>
                         <DialogHeader>
@@ -60,15 +45,12 @@ export default function DeleteTeamForm({ team }: Props) {
                                 Delete Team
                             </DialogTitle>
                             <DialogDescription>
-                                Are you sure you want to delete "{team.name}"? This action cannot be undone.
-                                All team resources and data will be permanently deleted.
+                                Are you sure you want to delete "{team.name}"? This action cannot be undone. All team resources and data will be
+                                permanently deleted.
                             </DialogDescription>
                         </DialogHeader>
                         <DialogFooter>
-                            <Button
-                                variant="outline"
-                                onClick={() => setConfirmingTeamDeletion(false)}
-                            >
+                            <Button variant="outline" onClick={() => setConfirmingTeamDeletion(false)}>
                                 Cancel
                             </Button>
                             <Button

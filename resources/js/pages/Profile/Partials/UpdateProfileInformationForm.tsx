@@ -1,15 +1,15 @@
-import { Link, router, useForm } from '@inertiajs/react';
-import React, { useRef, useState } from 'react';
-import useRoute from '@/Hooks/useRoute';
+import HeadingSmall from '@/Components/HeadingSmall';
 import InputError from '@/Components/ui/InputError';
+import { Button } from '@/Components/ui/button';
 import { Input } from '@/Components/ui/input';
 import { Label } from '@/Components/ui/label';
-import { Button } from '@/Components/ui/button';
-import { User } from '@/types';
+import useRoute from '@/Hooks/useRoute';
 import useTypedPage from '@/Hooks/useTypedPage';
-import HeadingSmall from '@/Components/HeadingSmall';
-import { Transition } from '@headlessui/react';
 import { cn } from '@/lib/utils';
+import { User } from '@/types';
+import { Transition } from '@headlessui/react';
+import { Link, router, useForm } from '@inertiajs/react';
+import { useRef, useState } from 'react';
 
 interface Props {
     user: User;
@@ -51,7 +51,7 @@ export default function UpdateProfileInformationForm({ user }: Props) {
 
         const reader = new FileReader();
 
-        reader.onload = e => {
+        reader.onload = (e) => {
             setPhotoPreview(e.target?.result as string);
         };
 
@@ -77,12 +77,9 @@ export default function UpdateProfileInformationForm({ user }: Props) {
 
     return (
         <div className="space-y-6">
-            <HeadingSmall
-                title="Profile Information"
-                description="Update your account's profile information and email address."
-            />
+            <HeadingSmall title="Profile Information" description="Update your account's profile information and email address." />
             <form
-                onSubmit={e => {
+                onSubmit={(e) => {
                     e.preventDefault();
                     updateProfileInformation();
                 }}
@@ -92,12 +89,7 @@ export default function UpdateProfileInformationForm({ user }: Props) {
                 {page.props.jetstream.managesProfilePhotos ? (
                     <div className="grid gap-2">
                         {/* <!-- Profile Photo File Input --> */}
-                        <input
-                            type="file"
-                            className="hidden"
-                            ref={photoRef}
-                            onChange={updatePhotoPreview}
-                        />
+                        <input type="file" className="hidden" ref={photoRef} onChange={updatePhotoPreview} />
 
                         <Label htmlFor="photo">Photo</Label>
 
@@ -105,7 +97,7 @@ export default function UpdateProfileInformationForm({ user }: Props) {
                             // <!-- New Profile Photo Preview -->
                             <div className="mt-1">
                                 <span
-                                    className="block rounded-full w-20 h-20"
+                                    className="block h-20 w-20 rounded-full"
                                     style={{
                                         backgroundSize: 'cover',
                                         backgroundRepeat: 'no-repeat',
@@ -117,29 +109,17 @@ export default function UpdateProfileInformationForm({ user }: Props) {
                         ) : (
                             // <!-- Current Profile Photo -->
                             <div className="mt-1">
-                                <img
-                                    src={user.profile_photo_url}
-                                    alt={user.name}
-                                    className="rounded-full h-20 w-20 object-cover"
-                                />
+                                <img src={user.profile_photo_url} alt={user.name} className="h-20 w-20 rounded-full object-cover" />
                             </div>
                         )}
 
-                        <div className="flex items-center gap-2 mt-2">
-                            <Button
-                                variant="secondary"
-                                type="button"
-                                onClick={selectNewPhoto}
-                            >
+                        <div className="mt-2 flex items-center gap-2">
+                            <Button variant="secondary" type="button" onClick={selectNewPhoto}>
                                 Select A New Photo
                             </Button>
 
                             {user.profile_photo_path ? (
-                                <Button
-                                    variant="secondary"
-                                    type="button"
-                                    onClick={deletePhoto}
-                                >
+                                <Button variant="secondary" type="button" onClick={deletePhoto}>
                                     Remove Photo
                                 </Button>
                             ) : null}
@@ -157,7 +137,7 @@ export default function UpdateProfileInformationForm({ user }: Props) {
                         type="text"
                         className="mt-1 block w-full"
                         value={form.data.name}
-                        onChange={e => form.setData('name', e.currentTarget.value)}
+                        onChange={(e) => form.setData('name', e.currentTarget.value)}
                         autoComplete="name"
                         placeholder="Full name"
                     />
@@ -172,14 +152,13 @@ export default function UpdateProfileInformationForm({ user }: Props) {
                         type="email"
                         className="mt-1 block w-full"
                         value={form.data.email}
-                        onChange={e => form.setData('email', e.currentTarget.value)}
+                        onChange={(e) => form.setData('email', e.currentTarget.value)}
                         autoComplete="username"
                         placeholder="Email address"
                     />
                     <InputError message={form.errors.email} />
 
-                    {page.props.jetstream.hasEmailVerification &&
-                        user.email_verified_at === null ? (
+                    {page.props.jetstream.hasEmailVerification && user.email_verified_at === null ? (
                         <div>
                             <p className="text-sm text-muted-foreground">
                                 Your email address is unverified.{' '}
@@ -188,7 +167,7 @@ export default function UpdateProfileInformationForm({ user }: Props) {
                                     method="post"
                                     as="button"
                                     className="text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current! dark:decoration-neutral-500"
-                                    onClick={e => {
+                                    onClick={(e) => {
                                         e.preventDefault();
                                         setVerificationLinkSent(true);
                                     }}

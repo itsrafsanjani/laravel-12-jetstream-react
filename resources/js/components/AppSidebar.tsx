@@ -36,10 +36,14 @@ const footerNavItems: NavItem[] = [
 export function AppSidebar() {
     const { auth } = usePage<SharedData>().props;
 
+    if (!auth.user) {
+        return null;
+    }
+
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>
-                <AppTeamSwitcher user={auth.user!} teams={auth.user?.all_teams!} />
+                <AppTeamSwitcher user={auth.user} teams={auth.user.all_teams || []} />
             </SidebarHeader>
 
             <SidebarContent>

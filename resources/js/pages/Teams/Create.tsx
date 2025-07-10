@@ -1,9 +1,8 @@
-import CreateTeamForm from '@/Pages/Teams/Partials/CreateTeamForm';
-import AppLayout from '@/Layouts/AppLayout';
-import Heading from '@/Components/Heading';
-import { BreadcrumbItem } from '@/types';
 import useRoute from '@/Hooks/useRoute';
+import AppLayout from '@/Layouts/AppLayout';
 import TeamsLayout from '@/Layouts/teams/Layout';
+import CreateTeamForm from '@/Pages/Teams/Partials/CreateTeamForm';
+import { BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
 
 export default function Create() {
@@ -16,7 +15,7 @@ export default function Create() {
         {
             title: 'Create Team',
             href: route('teams.create'),
-        }
+        },
     ];
 
     return (

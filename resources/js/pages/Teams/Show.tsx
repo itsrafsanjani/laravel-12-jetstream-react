@@ -43,15 +43,9 @@ export default function Show({ team, availableRoles, permissions }: Props) {
             <TeamsLayout>
                 <UpdateTeamNameForm team={team} permissions={permissions} />
 
-                <TeamMemberManager
-                    team={team}
-                    availableRoles={availableRoles}
-                    userPermissions={permissions}
-                />
+                <TeamMemberManager team={team} availableRoles={availableRoles} userPermissions={permissions} />
 
-                {permissions.canDeleteTeam && !team.personal_team && (
-                    <DeleteTeamForm team={team} />
-                )}
+                {permissions.canDeleteTeam && !team.personal_team && <DeleteTeamForm team={team} />}
             </TeamsLayout>
         </AppLayout>
     );

@@ -1,34 +1,20 @@
-import useRoute from '@/Hooks/useRoute';
-import useTypedPage from '@/Hooks/useTypedPage';
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-} from '@/Components/ui/dialog';
-import { Button } from '@/Components/ui/button';
+import HeadingSmall from '@/Components/HeadingSmall';
+import InputError from '@/Components/ui/InputError';
 import { Avatar, AvatarFallback, AvatarImage } from '@/Components/ui/avatar';
 import { Badge } from '@/Components/ui/badge';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select';
-import InputError from '@/Components/ui/InputError';
+import { Button } from '@/Components/ui/button';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/Components/ui/dialog';
 import { Input } from '@/Components/ui/input';
 import { Label } from '@/Components/ui/label';
-import HeadingSmall from '@/Components/HeadingSmall';
-import {
-    JetstreamTeamPermissions,
-    Nullable,
-    Role,
-    Team,
-    TeamInvitation,
-    User,
-} from '@/types';
-import { router, useForm } from '@inertiajs/react';
-import React, { useState } from 'react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select';
+import useRoute from '@/Hooks/useRoute';
+import useTypedPage from '@/Hooks/useTypedPage';
 import { cn } from '@/lib/utils';
-import { Settings, Trash2, UserMinus } from 'lucide-react';
+import { JetstreamTeamPermissions, Nullable, Role, Team, TeamInvitation, User } from '@/types';
 import { Transition } from '@headlessui/react';
+import { router, useForm } from '@inertiajs/react';
+import { Settings, Trash2, UserMinus } from 'lucide-react';
+import { useState } from 'react';
 
 interface UserMembership extends User {
     membership: {
@@ -45,11 +31,7 @@ interface Props {
     userPermissions: JetstreamTeamPermissions;
 }
 
-export default function TeamMemberManager({
-    team,
-    availableRoles,
-    userPermissions,
-}: Props) {
+export default function TeamMemberManager({ team, availableRoles, userPermissions }: Props) {
     const route = useRoute();
     const addTeamMemberForm = useForm({
         email: '',
@@ -63,8 +45,7 @@ export default function TeamMemberManager({
     const [currentlyManagingRole, setCurrentlyManagingRole] = useState(false);
     const [managingRoleFor, setManagingRoleFor] = useState<Nullable<User>>(null);
     const [confirmingLeavingTeam, setConfirmingLeavingTeam] = useState(false);
-    const [teamMemberBeingRemoved, setTeamMemberBeingRemoved] =
-        useState<Nullable<User>>(null);
+    const [teamMemberBeingRemoved, setTeamMemberBeingRemoved] = useState<Nullable<User>>(null);
     const page = useTypedPage();
 
     function addTeamMember() {
@@ -102,9 +83,7 @@ export default function TeamMemberManager({
     }
 
     function leaveTeam() {
-        leaveTeamForm.delete(
-            route('team-members.destroy', [team, page.props.auth.user!]),
-        );
+        leaveTeamForm.delete(route('team-members.destroy', [team, page.props.auth.user!]));
     }
 
     function confirmTeamMemberRemoval(teamMember: User) {
@@ -115,22 +94,19 @@ export default function TeamMemberManager({
         if (!teamMemberBeingRemoved) {
             return;
         }
-        removeTeamMemberForm.delete(
-            route('team-members.destroy', [team, teamMemberBeingRemoved]),
-            {
-                errorBag: 'removeTeamMember',
-                preserveScroll: true,
-                preserveState: true,
-                onSuccess: () => setTeamMemberBeingRemoved(null),
-            },
-        );
+        removeTeamMemberForm.delete(route('team-members.destroy', [team, teamMemberBeingRemoved]), {
+            errorBag: 'removeTeamMember',
+            preserveScroll: true,
+            preserveState: true,
+            onSuccess: () => setTeamMemberBeingRemoved(null),
+        });
     }
 
     function displayableRole(role: string) {
-        return availableRoles.find(r => r.key === role)?.name;
+        return availableRoles.find((r) => r.key === role)?.name;
     }
 
-    function getRoleVariant(role: string): "default" | "secondary" | "destructive" | "outline" {
+    function getRoleVariant(role: string): 'default' | 'secondary' | 'destructive' | 'outline' {
         switch (role) {
             case 'admin':
                 return 'destructive';
@@ -149,7 +125,7 @@ export default function TeamMemberManager({
                     <HeadingSmall title="Add team member" description="Invite a new team member to collaborate with you" />
 
                     <form
-                        onSubmit={e => {
+                        onSubmit={(e) => {
                             e.preventDefault();
                             addTeamMember();
                         }}
@@ -163,12 +139,7 @@ export default function TeamMemberManager({
                                 className="mt-1 block w-full"
                                 placeholder="Enter email address"
                                 value={addTeamMemberForm.data.email}
-                                onChange={e =>
-                                    addTeamMemberForm.setData(
-                                        'email',
-                                        e.currentTarget.value,
-                                    )
-                                }
+                                onChange={(e) => addTeamMemberForm.setData('email', e.currentTarget.value)}
                             />
                             <InputError className="mt-2" message={addTeamMemberForm.errors.email} />
                         </div>
@@ -176,29 +147,22 @@ export default function TeamMemberManager({
                         {availableRoles.length > 0 && (
                             <div className="grid gap-2">
                                 <Label htmlFor="role">Role</Label>
-                                <Select
-                                    value={addTeamMemberForm.data.role || ''}
-                                    onValueChange={value =>
-                                        addTeamMemberForm.setData('role', value)
-                                    }
-                                >
+                                <Select value={addTeamMemberForm.data.role || ''} onValueChange={(value) => addTeamMemberForm.setData('role', value)}>
                                     <SelectTrigger>
                                         <SelectValue placeholder="Select a role">
                                             {addTeamMemberForm.data.role && (
                                                 <span className="font-medium">
-                                                    {availableRoles.find(r => r.key === addTeamMemberForm.data.role)?.name}
+                                                    {availableRoles.find((r) => r.key === addTeamMemberForm.data.role)?.name}
                                                 </span>
                                             )}
                                         </SelectValue>
                                     </SelectTrigger>
                                     <SelectContent>
-                                        {availableRoles.map(role => (
+                                        {availableRoles.map((role) => (
                                             <SelectItem key={role.key} value={role.key}>
                                                 <div className="flex flex-col">
                                                     <span className="font-medium">{role.name}</span>
-                                                    <span className="text-xs text-muted-foreground">
-                                                        {role.description}
-                                                    </span>
+                                                    <span className="text-xs text-muted-foreground">{role.description}</span>
                                                 </div>
                                             </SelectItem>
                                         ))}
@@ -239,30 +203,19 @@ export default function TeamMemberManager({
                     <HeadingSmall title="Pending invitations" description="These people have been invited to join your team" />
 
                     <div className="space-y-4">
-                        {team.team_invitations.map(invitation => (
-                            <div
-                                key={invitation.id}
-                                className="flex items-center justify-between py-3 border-b"
-                            >
+                        {team.team_invitations.map((invitation) => (
+                            <div key={invitation.id} className="flex items-center justify-between border-b py-3">
                                 <div className="flex items-center gap-3">
                                     <Avatar>
-                                        <AvatarFallback>
-                                            {invitation.email.slice(0, 2).toUpperCase()}
-                                        </AvatarFallback>
+                                        <AvatarFallback>{invitation.email.slice(0, 2).toUpperCase()}</AvatarFallback>
                                     </Avatar>
                                     <div>
                                         <p className="font-medium">{invitation.email}</p>
-                                        <p className="text-xs text-muted-foreground">
-                                            Invitation pending
-                                        </p>
+                                        <p className="text-xs text-muted-foreground">Invitation pending</p>
                                     </div>
                                 </div>
                                 {userPermissions.canRemoveTeamMembers && (
-                                    <Button
-                                        variant="ghost"
-                                        size="sm"
-                                        onClick={() => cancelTeamInvitation(invitation)}
-                                    >
+                                    <Button variant="ghost" size="sm" onClick={() => cancelTeamInvitation(invitation)}>
                                         Cancel
                                     </Button>
                                 )}
@@ -278,60 +231,36 @@ export default function TeamMemberManager({
                     <HeadingSmall title="Team members" description="All current members of this team" />
 
                     <div className="space-y-4">
-                        {team.users.map(user => (
-                            <div
-                                key={user.id}
-                                className="flex items-center justify-between py-3 border-b"
-                            >
+                        {team.users.map((user) => (
+                            <div key={user.id} className="flex items-center justify-between border-b py-3">
                                 <div className="flex items-center gap-3">
                                     <Avatar>
-                                        <AvatarImage
-                                            src={user.profile_photo_url}
-                                            alt={user.name}
-                                        />
-                                        <AvatarFallback>
-                                            {user.name?.slice(0, 2).toUpperCase()}
-                                        </AvatarFallback>
+                                        <AvatarImage src={user.profile_photo_url} alt={user.name} />
+                                        <AvatarFallback>{user.name?.slice(0, 2).toUpperCase()}</AvatarFallback>
                                     </Avatar>
                                     <div>
                                         <p className="font-medium">{user.name}</p>
-                                        <p className="text-xs text-muted-foreground">
-                                            {user.email}
-                                        </p>
+                                        <p className="text-xs text-muted-foreground">{user.email}</p>
                                     </div>
                                 </div>
 
                                 <div className="flex items-center gap-2">
                                     {displayableRole(user.membership.role) && (
-                                        <Badge variant={getRoleVariant(user.membership.role)}>
-                                            {displayableRole(user.membership.role)}
-                                        </Badge>
+                                        <Badge variant={getRoleVariant(user.membership.role)}>{displayableRole(user.membership.role)}</Badge>
                                     )}
 
                                     {userPermissions.canAddTeamMembers && availableRoles.length > 0 && (
-                                        <Button
-                                            variant="ghost"
-                                            size="sm"
-                                            onClick={() => manageRole(user)}
-                                        >
+                                        <Button variant="ghost" size="sm" onClick={() => manageRole(user)}>
                                             <Settings className="h-4 w-4" />
                                         </Button>
                                     )}
 
                                     {page.props.auth.user?.id === user.id ? (
-                                        <Button
-                                            variant="ghost"
-                                            size="sm"
-                                            onClick={confirmLeavingTeam}
-                                        >
+                                        <Button variant="ghost" size="sm" onClick={confirmLeavingTeam}>
                                             <UserMinus className="h-4 w-4" />
                                         </Button>
                                     ) : userPermissions.canRemoveTeamMembers ? (
-                                        <Button
-                                            variant="ghost"
-                                            size="sm"
-                                            onClick={() => confirmTeamMemberRemoval(user)}
-                                        >
+                                        <Button variant="ghost" size="sm" onClick={() => confirmTeamMemberRemoval(user)}>
                                             <Trash2 className="h-4 w-4" />
                                         </Button>
                                     ) : null}
@@ -348,9 +277,7 @@ export default function TeamMemberManager({
                     <HeadingSmall title="Leave team" description="If you leave this team, you will lose access to all team resources" />
 
                     <div className="space-y-4 rounded-lg border border-red-100 bg-red-50 p-4 dark:border-red-200/10 dark:bg-red-700/10">
-                        <p className="text-sm text-red-600 dark:text-red-100 mb-4">
-                            Please proceed with caution, this cannot be undone.
-                        </p>
+                        <p className="mb-4 text-sm text-red-600 dark:text-red-100">Please proceed with caution, this cannot be undone.</p>
                         <Button variant="destructive" onClick={confirmLeavingTeam}>
                             Leave Team
                         </Button>
@@ -359,39 +286,27 @@ export default function TeamMemberManager({
             )}
 
             {/* Role Management Dialog */}
-            <Dialog
-                open={currentlyManagingRole}
-                onOpenChange={setCurrentlyManagingRole}
-            >
+            <Dialog open={currentlyManagingRole} onOpenChange={setCurrentlyManagingRole}>
                 <DialogContent>
                     <DialogHeader>
                         <DialogTitle>Manage Role</DialogTitle>
-                        <DialogDescription>
-                            Select the new role for {managingRoleFor?.name}.
-                        </DialogDescription>
+                        <DialogDescription>Select the new role for {managingRoleFor?.name}.</DialogDescription>
                     </DialogHeader>
                     <div className="space-y-4">
-                        <Select
-                            value={updateRoleForm.data.role || ''}
-                            onValueChange={value => updateRoleForm.setData('role', value)}
-                        >
+                        <Select value={updateRoleForm.data.role || ''} onValueChange={(value) => updateRoleForm.setData('role', value)}>
                             <SelectTrigger>
                                 <SelectValue placeholder="Select a role">
                                     {updateRoleForm.data.role && (
-                                        <span className="font-medium">
-                                            {availableRoles.find(r => r.key === updateRoleForm.data.role)?.name}
-                                        </span>
+                                        <span className="font-medium">{availableRoles.find((r) => r.key === updateRoleForm.data.role)?.name}</span>
                                     )}
                                 </SelectValue>
                             </SelectTrigger>
                             <SelectContent>
-                                {availableRoles.map(role => (
+                                {availableRoles.map((role) => (
                                     <SelectItem key={role.key} value={role.key}>
                                         <div className="flex flex-col">
                                             <span className="font-medium">{role.name}</span>
-                                            <span className="text-xs text-muted-foreground">
-                                                {role.description}
-                                            </span>
+                                            <span className="text-xs text-muted-foreground">{role.description}</span>
                                         </div>
                                     </SelectItem>
                                 ))}
@@ -399,16 +314,10 @@ export default function TeamMemberManager({
                         </Select>
                     </div>
                     <DialogFooter>
-                        <Button
-                            variant="outline"
-                            onClick={() => setCurrentlyManagingRole(false)}
-                        >
+                        <Button variant="outline" onClick={() => setCurrentlyManagingRole(false)}>
                             Cancel
                         </Button>
-                        <Button
-                            onClick={updateRole}
-                            disabled={updateRoleForm.processing}
-                        >
+                        <Button onClick={updateRole} disabled={updateRoleForm.processing}>
                             Update Role
                         </Button>
                     </DialogFooter>
@@ -416,29 +325,17 @@ export default function TeamMemberManager({
             </Dialog>
 
             {/* Leave Team Confirmation Dialog */}
-            <Dialog
-                open={confirmingLeavingTeam}
-                onOpenChange={setConfirmingLeavingTeam}
-            >
+            <Dialog open={confirmingLeavingTeam} onOpenChange={setConfirmingLeavingTeam}>
                 <DialogContent>
                     <DialogHeader>
                         <DialogTitle>Leave Team</DialogTitle>
-                        <DialogDescription>
-                            Are you sure you want to leave this team? You will lose access to all team resources.
-                        </DialogDescription>
+                        <DialogDescription>Are you sure you want to leave this team? You will lose access to all team resources.</DialogDescription>
                     </DialogHeader>
                     <DialogFooter>
-                        <Button
-                            variant="outline"
-                            onClick={() => setConfirmingLeavingTeam(false)}
-                        >
+                        <Button variant="outline" onClick={() => setConfirmingLeavingTeam(false)}>
                             Cancel
                         </Button>
-                        <Button
-                            variant="destructive"
-                            onClick={leaveTeam}
-                            disabled={leaveTeamForm.processing}
-                        >
+                        <Button variant="destructive" onClick={leaveTeam} disabled={leaveTeamForm.processing}>
                             Leave Team
                         </Button>
                     </DialogFooter>
@@ -446,29 +343,17 @@ export default function TeamMemberManager({
             </Dialog>
 
             {/* Remove Team Member Confirmation Dialog */}
-            <Dialog
-                open={!!teamMemberBeingRemoved}
-                onOpenChange={open => !open && setTeamMemberBeingRemoved(null)}
-            >
+            <Dialog open={!!teamMemberBeingRemoved} onOpenChange={(open) => !open && setTeamMemberBeingRemoved(null)}>
                 <DialogContent>
                     <DialogHeader>
                         <DialogTitle>Remove Team Member</DialogTitle>
-                        <DialogDescription>
-                            Are you sure you want to remove {teamMemberBeingRemoved?.name} from this team?
-                        </DialogDescription>
+                        <DialogDescription>Are you sure you want to remove {teamMemberBeingRemoved?.name} from this team?</DialogDescription>
                     </DialogHeader>
                     <DialogFooter>
-                        <Button
-                            variant="outline"
-                            onClick={() => setTeamMemberBeingRemoved(null)}
-                        >
+                        <Button variant="outline" onClick={() => setTeamMemberBeingRemoved(null)}>
                             Cancel
                         </Button>
-                        <Button
-                            variant="destructive"
-                            onClick={removeTeamMember}
-                            disabled={removeTeamMemberForm.processing}
-                        >
+                        <Button variant="destructive" onClick={removeTeamMember} disabled={removeTeamMemberForm.processing}>
                             Remove Member
                         </Button>
                     </DialogFooter>

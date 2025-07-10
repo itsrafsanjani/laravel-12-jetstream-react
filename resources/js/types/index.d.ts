@@ -74,13 +74,13 @@ export interface Auth {
     >;
 }
 
-export type InertiaSharedProps<T = {}> = T & {
+export type InertiaSharedProps<T = Record<string, unknown>> = T & {
     jetstream: {
         canCreateTeams: boolean;
         canManageTwoFactorAuthentication: boolean;
         canUpdatePassword: boolean;
         canUpdateProfileInformation: boolean;
-        flash: any;
+        flash: Record<string, unknown>;
         hasAccountDeletionFeatures: boolean;
         hasApiFeatures: boolean;
         hasTeamFeatures: boolean;
@@ -89,8 +89,8 @@ export type InertiaSharedProps<T = {}> = T & {
         hasEmailVerification: boolean;
     };
     auth: Auth;
-    errorBags: any;
-    errors: any;
+    errorBags: Record<string, unknown>;
+    errors: Record<string, unknown>;
 };
 
 export interface Session {

@@ -1,10 +1,11 @@
 import '../css/app.css';
 
+import { initializeTheme } from '@/Hooks/use-appearance';
 import { RouteContext } from '@/Hooks/useRoute';
 import { createInertiaApp } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createRoot } from 'react-dom/client';
-import { initializeTheme } from '@/Hooks/use-appearance';
+import { route } from 'ziggy-js';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -15,7 +16,7 @@ createInertiaApp({
         const root = createRoot(el);
 
         root.render(
-            <RouteContext.Provider value={(window as any).route}>
+            <RouteContext.Provider value={(window as unknown as { route: typeof route }).route}>
                 <App {...props} />
             </RouteContext.Provider>,
         );
