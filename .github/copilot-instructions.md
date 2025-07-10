@@ -12,12 +12,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `vendor/bin/phpstan analyse` - Run static analysis
 
 ### Frontend (React/TypeScript)
-- `npm run dev` - Start Vite development server
-- `npm run build` - Build for production
-- `npm run lint` - Run ESLint with auto-fix
-- `npm run types` - TypeScript type checking
-- `npm run format` - Format code with Prettier
-- `npm run format:check` - Check formatting without changes
+- `pnpm run dev` - Start Vite development server
+- `pnpm run build` - Build for production
+- `pnpm run lint` - Run ESLint with auto-fix
+- `pnpm run types` - TypeScript type checking
+- `pnpm run format` - Format code with Prettier
+- `pnpm run format:check` - Check formatting without changes
 
 ## Project Architecture
 
