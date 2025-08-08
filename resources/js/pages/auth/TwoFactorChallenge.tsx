@@ -2,15 +2,13 @@ import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo';
 import { Button } from '@/Components/ui/button';
 import { Card, CardContent } from '@/Components/ui/card';
 import { Input } from '@/Components/ui/input';
-import InputError from '@/Components/ui/InputError';
+import InputError from '@/Components/ui/input-error';
 import { Label } from '@/Components/ui/label';
 import ValidationErrors from '@/Components/ui/ValidationErrors';
-import useRoute from '@/Hooks/useRoute';
 import { Head, useForm } from '@inertiajs/react';
 import React, { useRef, useState } from 'react';
 
 export default function TwoFactorChallenge() {
-    const route = useRoute();
     const [recovery, setRecovery] = useState(false);
     const form = useForm({
         code: '',

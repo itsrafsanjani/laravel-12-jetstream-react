@@ -1,4 +1,4 @@
-import InputError from '@/Components/ui/InputError';
+import InputError from '@/Components/ui/input-error';
 import AppLayout from '@/Layouts/AppLayout';
 import SettingsLayout from '@/Layouts/settings/SettingsLayout';
 import { type BreadcrumbItem } from '@/types';

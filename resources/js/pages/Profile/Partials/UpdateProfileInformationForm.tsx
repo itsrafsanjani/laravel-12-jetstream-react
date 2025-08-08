@@ -1,9 +1,8 @@
 import HeadingSmall from '@/Components/HeadingSmall';
-import InputError from '@/Components/ui/InputError';
+import InputError from '@/Components/ui/input-error';
 import { Button } from '@/Components/ui/button';
 import { Input } from '@/Components/ui/input';
 import { Label } from '@/Components/ui/label';
-import useRoute from '@/Hooks/useRoute';
 import useTypedPage from '@/Hooks/useTypedPage';
 import { cn } from '@/lib/utils';
 import { User } from '@/types';
@@ -22,7 +21,6 @@ export default function UpdateProfileInformationForm({ user }: Props) {
         email: user.email,
         photo: null as File | null,
     });
-    const route = useRoute();
     const [photoPreview, setPhotoPreview] = useState<string | null>(null);
     const photoRef = useRef<HTMLInputElement>(null);
     const page = useTypedPage();

@@ -1,17 +1,15 @@
 import HeadingSmall from '@/Components/HeadingSmall';
-import InputError from '@/Components/ui/InputError';
+import InputError from '@/Components/ui/input-error';
 import { Avatar, AvatarFallback, AvatarImage } from '@/Components/ui/avatar';
 import { Button } from '@/Components/ui/button';
 import { Input } from '@/Components/ui/input';
 import { Label } from '@/Components/ui/label';
-import useRoute from '@/Hooks/useRoute';
 import useTypedPage from '@/Hooks/useTypedPage';
 import { cn } from '@/lib/utils';
 import { Transition } from '@headlessui/react';
 import { useForm } from '@inertiajs/react';
 
 export default function CreateTeamForm() {
-    const route = useRoute();
     const page = useTypedPage();
     const form = useForm({
         name: '',

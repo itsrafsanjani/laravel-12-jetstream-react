@@ -1,4 +1,3 @@
-import useRoute from '@/Hooks/useRoute';
 import AppLayout from '@/Layouts/AppLayout';
 import TeamsLayout from '@/Layouts/teams/Layout';
 import DeleteTeamForm from '@/Pages/Teams/Partials/DeleteTeamForm';
@@ -24,7 +23,6 @@ interface Props {
 }
 
 export default function Show({ team, availableRoles, permissions }: Props) {
-    const route = useRoute();
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: 'Teams',

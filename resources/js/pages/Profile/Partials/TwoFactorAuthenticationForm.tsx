@@ -2,7 +2,7 @@ import ConfirmsPassword from '@/Components/ConfirmsPassword';
 import HeadingSmall from '@/Components/HeadingSmall';
 import { Button } from '@/Components/ui/button';
 import { Input } from '@/Components/ui/input';
-import InputError from '@/Components/ui/InputError';
+import InputError from '@/Components/ui/input-error';
 import { Label } from '@/Components/ui/label';
 import useTypedPage from '@/Hooks/useTypedPage';
 import { cn } from '@/lib/utils';

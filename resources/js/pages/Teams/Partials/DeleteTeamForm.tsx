@@ -1,7 +1,6 @@
 import HeadingSmall from '@/Components/HeadingSmall';
 import { Button } from '@/Components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/Components/ui/dialog';
-import useRoute from '@/Hooks/useRoute';
 import { cn } from '@/lib/utils';
 import { Team } from '@/types';
 import { useForm } from '@inertiajs/react';
@@ -13,7 +12,6 @@ interface Props {
 }
 
 export default function DeleteTeamForm({ team }: Props) {
-    const route = useRoute();
     const [confirmingTeamDeletion, setConfirmingTeamDeletion] = useState(false);
     const form = useForm({});
 

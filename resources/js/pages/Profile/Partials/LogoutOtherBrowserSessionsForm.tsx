@@ -2,8 +2,7 @@ import HeadingSmall from '@/Components/HeadingSmall';
 import { Button } from '@/Components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/Components/ui/dialog';
 import { Input } from '@/Components/ui/input';
-import InputError from '@/Components/ui/InputError';
-import useRoute from '@/Hooks/useRoute';
+import InputError from '@/Components/ui/input-error';
 import { cn } from '@/lib/utils';
 import { Session } from '@/types';
 import { useForm } from '@inertiajs/react';
@@ -15,7 +14,6 @@ interface Props {
 
 export default function LogoutOtherBrowserSessions({ sessions }: Props) {
     const [confirmingLogout, setConfirmingLogout] = useState(false);
-    const route = useRoute();
     const passwordRef = useRef<HTMLInputElement>(null);
     const form = useForm({
         password: '',

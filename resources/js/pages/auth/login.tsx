@@ -6,7 +6,7 @@ import TextLink from '@/Components/TextLink';
 import { Button } from '@/Components/ui/button';
 import { Checkbox } from '@/Components/ui/checkbox';
 import { Input } from '@/Components/ui/input';
-import InputError from '@/Components/ui/InputError';
+import InputError from '@/Components/ui/input-error';
 import { Label } from '@/Components/ui/label';
 import AuthLayout from '@/Layouts/AuthLayout';
 

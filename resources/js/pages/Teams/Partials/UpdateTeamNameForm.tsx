@@ -1,10 +1,9 @@
 import HeadingSmall from '@/Components/HeadingSmall';
-import InputError from '@/Components/ui/InputError';
+import InputError from '@/Components/ui/input-error';
 import { Avatar, AvatarFallback, AvatarImage } from '@/Components/ui/avatar';
 import { Button } from '@/Components/ui/button';
 import { Input } from '@/Components/ui/input';
 import { Label } from '@/Components/ui/label';
-import useRoute from '@/Hooks/useRoute';
 import { cn } from '@/lib/utils';
 import { JetstreamTeamPermissions, Team, User } from '@/types';
 import { Transition } from '@headlessui/react';
@@ -16,7 +15,6 @@ interface Props {
 }
 
 export default function UpdateTeamNameForm({ team, permissions }: Props) {
-    const route = useRoute();
     const form = useForm({
         name: team.name,
     });

@@ -5,7 +5,7 @@ import { FormEventHandler } from 'react';
 import TextLink from '@/Components/TextLink';
 import { Button } from '@/Components/ui/button';
 import { Input } from '@/Components/ui/input';
-import InputError from '@/Components/ui/InputError';
+import InputError from '@/Components/ui/input-error';
 import { Label } from '@/Components/ui/label';
 import AuthLayout from '@/Layouts/AuthLayout';
 

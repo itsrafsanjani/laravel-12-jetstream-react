@@ -1,5 +1,5 @@
 import HeadingSmall from '@/Components/HeadingSmall';
-import InputError from '@/Components/ui/InputError';
+import InputError from '@/Components/ui/input-error';
 import { Avatar, AvatarFallback, AvatarImage } from '@/Components/ui/avatar';
 import { Badge } from '@/Components/ui/badge';
 import { Button } from '@/Components/ui/button';
@@ -7,7 +7,6 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Input } from '@/Components/ui/input';
 import { Label } from '@/Components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/Components/ui/select';
-import useRoute from '@/Hooks/useRoute';
 import useTypedPage from '@/Hooks/useTypedPage';
 import { cn } from '@/lib/utils';
 import { JetstreamTeamPermissions, Nullable, Role, Team, TeamInvitation, User } from '@/types';
@@ -32,7 +31,6 @@ interface Props {
 }
 
 export default function TeamMemberManager({ team, availableRoles, userPermissions }: Props) {
-    const route = useRoute();
     const addTeamMemberForm = useForm({
         email: '',
         role: null as Nullable<string>,

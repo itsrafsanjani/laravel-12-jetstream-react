@@ -1,8 +1,7 @@
 import { Button } from '@/Components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/Components/ui/dialog';
 import { Input } from '@/Components/ui/input';
-import InputError from '@/Components/ui/InputError';
-import useRoute from '@/Hooks/useRoute';
+import InputError from '@/Components/ui/input-error';
 import axios, { AxiosError } from 'axios';
 import classNames from 'classnames';
 import { PropsWithChildren, useRef, useState } from 'react';
@@ -27,7 +26,6 @@ export default function ConfirmsPassword({
     onConfirm,
     children,
 }: PropsWithChildren<Props>) {
-    const route = useRoute();
     const [confirmingPassword, setConfirmingPassword] = useState(false);
     const [form, setForm] = useState({
         password: '',

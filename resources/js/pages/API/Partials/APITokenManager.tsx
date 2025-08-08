@@ -3,10 +3,9 @@ import { Card, CardContent, CardFooter } from '@/Components/ui/card';
 import { Checkbox } from '@/Components/ui/checkbox';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/Components/ui/dialog';
 import { Input } from '@/Components/ui/input';
-import InputError from '@/Components/ui/InputError';
+import InputError from '@/Components/ui/input-error';
 import { Label } from '@/Components/ui/label';
 import { Separator } from '@/Components/ui/separator';
-import useRoute from '@/Hooks/useRoute';
 import useTypedPage from '@/Hooks/useTypedPage';
 import { ApiToken } from '@/types';
 import { useForm } from '@inertiajs/react';
@@ -20,7 +19,6 @@ interface Props {
 }
 
 export default function APITokenManager({ tokens, availablePermissions, defaultPermissions }: Props) {
-    const route = useRoute();
     const createApiTokenForm = useForm({
         name: '',
         permissions: defaultPermissions,

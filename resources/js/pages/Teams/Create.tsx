@@ -1,4 +1,3 @@
-import useRoute from '@/Hooks/useRoute';
 import AppLayout from '@/Layouts/AppLayout';
 import TeamsLayout from '@/Layouts/teams/Layout';
 import CreateTeamForm from '@/Pages/Teams/Partials/CreateTeamForm';
@@ -6,7 +5,6 @@ import { BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
 
 export default function Create() {
-    const route = useRoute();
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: 'Teams',
