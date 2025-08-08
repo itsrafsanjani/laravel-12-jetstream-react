@@ -90,7 +90,6 @@ export type InertiaSharedProps<T = Record<string, unknown>> = T & {
     };
     auth: Auth;
     errorBags: Record<string, unknown>;
-    errors: Record<string, unknown>;
 };
 
 export interface Session {

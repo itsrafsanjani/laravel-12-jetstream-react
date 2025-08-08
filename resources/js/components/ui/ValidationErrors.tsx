@@ -1,12 +1,12 @@
-import { usePage } from '@inertiajs/react';
 import React from 'react';
+import useTypedPage from '@/Hooks/useTypedPage';
 
 interface Props {
     className?: string;
 }
 
 export default function ValidationErrors({ className }: Props) {
-    const { errors } = usePage().props;
+    const { errors } = useTypedPage().props;
     const hasErrors = Object.keys(errors).length > 0;
 
     if (!hasErrors) {
