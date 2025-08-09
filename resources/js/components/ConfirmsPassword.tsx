@@ -3,8 +3,8 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Input } from '@/Components/ui/input';
 import InputError from '@/Components/ui/input-error';
 import axios, { AxiosError } from 'axios';
-import classNames from 'classnames';
 import { PropsWithChildren, useRef, useState } from 'react';
+import { cn } from '@/lib/utils';
 
 interface Props {
     title?: string;
@@ -102,7 +102,7 @@ export default function ConfirmsPassword({
                         </Button>
 
                         <Button
-                            className={classNames('ml-2', { 'opacity-25': form.processing })}
+                            className={cn('ml-2', { 'opacity-25': form.processing })}
                             onClick={confirmPassword}
                             disabled={form.processing}
                         >

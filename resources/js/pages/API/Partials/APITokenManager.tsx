@@ -9,8 +9,8 @@ import { Separator } from '@/Components/ui/separator';
 import useTypedPage from '@/Hooks/useTypedPage';
 import { ApiToken } from '@/types';
 import { useForm } from '@inertiajs/react';
-import classNames from 'classnames';
 import { useState } from 'react';
+import { cn } from '@/lib/utils';
 
 interface Props {
     tokens: ApiToken[];
@@ -142,7 +142,7 @@ export default function APITokenManager({ tokens, availablePermissions, defaultP
                                     {createApiTokenForm.recentlySuccessful && <div className="mr-3">Created.</div>}
 
                                     <Button
-                                        className={classNames({
+                                        className={cn({
                                             'opacity-25': createApiTokenForm.processing,
                                         })}
                                         disabled={createApiTokenForm.processing}
